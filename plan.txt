@@ -1,0 +1,33 @@
+Messed...
+
+has a loop -> paths.. dispatching
+
+
+
+listens to a source
+dispatches to the loop
+responds (optionally)
+goes back to listening.
+
+
+class Hello
+  
+  def say
+    say "you're super awesome"
+  end
+  
+  def jerks
+    say "you're super awesome jerk"
+  end
+  
+end
+
+Messed.new do 
+  for 'hey you', :class => 'hello', :action => 'say'
+  for 'hey you jerks', :class => 'hello', action => 'jerks'
+  for 'hey you', :requirements => {:source => :from_friends} do
+    say 'hey hey'
+    reply 'nice to see you guy'
+    whisper 'okay sure'
+  end
+end
