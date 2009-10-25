@@ -3,12 +3,9 @@ require 'usher'
 require 'lib/messed'
 
 
-class Hello
+class Hello < Messed::Controller
   
-  include Messed::Helper
-  include Messed::Respond
-  
-  def say
+  def _say
     say "you're super awesome"
   end
   
@@ -19,14 +16,18 @@ class Hello
 end
 
 m = Messed.new do 
-  with 'hey you', :controller => 'hello', :action => 'say'
   with 'hey you jerks', :controller => 'hello', :action => 'jerks'
   with 'hey you', :requirements => {:source => :from_friends} do
     say 'hey hey'
-    reply 'nice to see you guy'
-    whisper 'okay sure'
+    #reply 'nice to see you guy'
+    #whisper 'okay sure'
   end
 end
 
-m.process(Messed::Message.new("hey you"))
-m.process(Messed::Message.new("hey you jerks"))
+m.outgoing = Messed::Queue::Beanstalk.new('outgoing-messages')
+m.incoming = Messed::Queue::Beanstalk.new('incoming')
+
+m.incoming << Messed::Message.new("hey you jerks")
+m.incoming << Messed::Message.new("hey you")
+
+m.process_incoming

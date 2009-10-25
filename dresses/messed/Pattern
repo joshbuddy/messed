@@ -1,0 +1,6 @@
+desc "make executable"
+directory '/bin' do |dir|
+  dir.for('*') { |f|
+    File.chmod(0755, f)
+  }
+end
