@@ -3,13 +3,14 @@ require 'logger'
 
 class Messed
   
-  autoload :Processing, File.join(File.dirname(__FILE__), 'messed', 'processing')
-  autoload :Message,    File.join(File.dirname(__FILE__), 'messed', 'message')
-  autoload :Respond,    File.join(File.dirname(__FILE__), 'messed', 'respond')
-  autoload :Helper,     File.join(File.dirname(__FILE__), 'messed', 'helper')
-  autoload :Queue,      File.join(File.dirname(__FILE__), 'messed', 'queue')
-  autoload :Controller, File.join(File.dirname(__FILE__), 'messed', 'controller')
-  autoload :Tasks,      File.join(File.dirname(__FILE__), 'messed', 'tasks')
+  autoload :Processing,  File.join(File.dirname(__FILE__), 'messed', 'processing')
+  autoload :Message,     File.join(File.dirname(__FILE__), 'messed', 'message')
+  autoload :Respond,     File.join(File.dirname(__FILE__), 'messed', 'respond')
+  autoload :Helper,      File.join(File.dirname(__FILE__), 'messed', 'helper')
+  autoload :Queue,       File.join(File.dirname(__FILE__), 'messed', 'queue')
+  autoload :Controller,  File.join(File.dirname(__FILE__), 'messed', 'controller')
+  autoload :Tasks,       File.join(File.dirname(__FILE__), 'messed', 'tasks')
+  autoload :Application, File.join(File.dirname(__FILE__), 'messed', 'application')
 
   include Processing
   include Respond
