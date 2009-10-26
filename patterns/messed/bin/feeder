@@ -17,7 +17,7 @@ class Feeder < Thor
 
   desc "start a feeder [NAME]", "start a feed instance"
   def start(name = nil)
-    application = Messed::Application.new(File.join(File.dirname(__FILE__), '..'))
+    application = Messed::Application.new(File.expand_path(File.join(File.dirname(__FILE__), '..')))
     feeder = if name.nil? and application.feeders.size == 0
       application.feeders.values.first
     elsif @application.feeders.key?(name)

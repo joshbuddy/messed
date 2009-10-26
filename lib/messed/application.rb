@@ -9,13 +9,15 @@ class Messed
     end
     
     def configuration_file
-      File.join(root_directory, 'config/application')
+      File.join(root_directory, 'config/application.rb')
     end
     
     
     def load_configuration
       instance_eval File.read(configuration_file)
-      
+    end
+    
+    def feeders
       
     end
     
