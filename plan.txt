@@ -31,3 +31,7 @@ Messed.new do
     whisper 'okay sure'
   end
 end
+
+
+TODO
+ - [BG] Deal with duplicate messages. Consider a message "duplicate" if the sender and content is the same and it was sent within 30 seconds of the previous duplicate message.
