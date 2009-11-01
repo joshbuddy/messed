@@ -46,3 +46,5 @@ Models for incoming...
   Holding open a socket and streaming
   Listening on a path, and doing something with the incoming request
 
+TODO
+ - [BG] Deal with duplicate messages. Consider a message "duplicate" if the sender and content is the same and it was sent within 30 seconds of the previous duplicate message.
