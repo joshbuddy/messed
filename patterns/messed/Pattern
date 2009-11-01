@@ -1,6 +1,27 @@
 desc "make executable"
 directory '/bin' do |dir|
   dir.for('*') { |f|
+    
+    
+    new_exec = <<-HERE_DOC
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#{File.read(f)}
+    HERE_DOC
+    File.open(f, 'w') {|out| out << new_exec}
     File.chmod(0755, f)
   }
 end

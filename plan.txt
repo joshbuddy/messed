@@ -31,3 +31,18 @@ Messed.new do
     whisper 'okay sure'
   end
 end
+
+
+models for incoming -> 
+
+server
+
+ -> boot up em,
+ -> if its a poller, start the polling interval, and run the block ...
+ -> if its a listener, start
+ 
+Models for incoming...
+  Polling w/ intervals
+  Holding open a socket and streaming
+  Listening on a path, and doing something with the incoming request
+

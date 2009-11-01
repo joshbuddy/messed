@@ -2,7 +2,8 @@ class Messed
   class Queue
     class Beanstalk < Queue
       
-      def initialize(tube, connection = 'localhost:11300')
+      def initialize(application, tube, connection = 'localhost:11300')
+        @application = application
         @beanstalk = ::Beanstalk::Pool.new(Array(connection))
         @tube = tube
         @beanstalk.use(tube)
@@ -11,7 +12,7 @@ class Messed
       
       def take
         job = beanstalk.reserve
-        yield Messed::Message.from_json(job.body)
+        yield application.message_class.from_json(job.body)
         job.delete
       end
       
@@ -20,7 +21,7 @@ class Messed
       end
       
       protected
-      attr_reader :beanstalk, :tube
+      attr_reader :beanstalk, :tube, :application
       
     end
   end

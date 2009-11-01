@@ -1,0 +1,28 @@
+$root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
+
+class RunnerTask < Thor
+
+  method_options :detach => false
+  method_options :environment => "development"
+  desc "adapter [NAME]", "start a runner (#{Messed::Booter.possible_adapters($root).join(', ')})"
+  def adapter(name)
+    booter = Messed::Booter.new($root, options.environment)
+    adapter = booter.base_map[name]
+    
+    raise("unable to find adapter with name #{name}") unless adapter
+    
+    Messed::Base::Runner.new(adapter, :detach => options.detach?).start
+  end
+  
+  method_options :detach => false
+  method_options :environment => "development"
+  desc "application [NAME]", "start the application"
+  def application
+    booter = Messed::Booter.new($root, options.environment)
+    application = booter.application
+    Messed::Base::Runner.new(application, :detach => options.detach?).start
+  end
+  
+end
+
+RunnerTask.start

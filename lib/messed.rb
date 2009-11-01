@@ -1,5 +1,8 @@
-require 'usher'
+require 'hashify'
 require 'logger'
+require 'activesupport'
+require 'time'
+require 'em-jack'
 
 class Messed
   
@@ -10,15 +13,18 @@ class Messed
   autoload :Queue,       File.join(File.dirname(__FILE__), 'messed', 'queue')
   autoload :Controller,  File.join(File.dirname(__FILE__), 'messed', 'controller')
   autoload :Tasks,       File.join(File.dirname(__FILE__), 'messed', 'tasks')
-  autoload :Application, File.join(File.dirname(__FILE__), 'messed', 'application')
+  autoload :Booter,      File.join(File.dirname(__FILE__), 'messed', 'booter')
+  autoload :Base,        File.join(File.dirname(__FILE__), 'messed', 'base')
+  autoload :Utils,       File.join(File.dirname(__FILE__), 'messed', 'utils')
+  autoload :Matcher,     File.join(File.dirname(__FILE__), 'messed', 'matcher')
 
   include Processing
   include Respond
 
-  after_processing :clear_message_and_params
+  after_processing :reset!
 
   attr_accessor :params, :message, :outgoing, :incoming, :controller
-  attr_reader :logger
+  attr_reader :logger, :matchers
   
   @@logger = Logger.new(STDOUT)
   @@logger.level = Logger::DEBUG
@@ -29,20 +35,28 @@ class Messed
 
   def initialize(type = :twitter, &block)
     @type = type
-    @router = Usher.new(:delimiters => [' '])
+    @matchers = []
     instance_eval(&block) if block
   end
   
+  def message_class
+    Message::Twitter
+  end
+
   def logger
     self.class.logger
   end
 
-  def with(route, options = nil, &block)
-    @router.add_route(route, options).to(extract_destination(options, block))
+  def with(*args, &block)
+    matchers << if args.first.is_a?(Hash)
+      Matcher::Conditional.new(nil, args.first, &block)
+    else
+      Matcher::Conditional.new(*args, &block)
+    end
   end
 
   def otherwise(options = nil, &block)
-    default_destination = extract_destination(options, block)
+    matchers << Matcher::Always.new(&block)
   end
 
   def process_incoming
@@ -53,8 +67,24 @@ class Messed
     end
   end
 
+  def start(detach)
+    puts "starting application! detach? #{detach}"
+    process_incoming
+  end
+  
   def process(message)
     self.message = message
+    
+    controllers = Set.new
+    
+    matchers.find {|matcher|
+      if matcher.match?(message)
+        controllers << process_destination(matcher.destination)
+        matcher.stop_processing?
+      else
+        false
+      end
+    }
     
     response = @router.recognize_path(message.body)
     destination = if response
@@ -63,7 +93,6 @@ class Messed
     else
       process_default_destination
     end
-    controller = process_destination(destination)
     process_response(controller.response)
     controller.reset_processing! if controller.respond_to?(:reset_processing!)
     reset_processing!
@@ -76,12 +105,12 @@ class Messed
   end
   protected :extract_destination
   
-  def clear_message_and_params
+  def reset!
     self.controller = nil
     self.message = nil
     self.params = nil
   end
-  protected :clear_message_and_params
+  protected :reset!
   
   def process_destination(destination)
     if destination.respond_to?(:call)
@@ -105,5 +134,5 @@ class Messed
       self.outgoing = response
     end
   end
-
+  
 end

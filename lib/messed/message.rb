@@ -1,32 +1,24 @@
-require 'json'
-
 class Messed
 
   class Message
 
+    autoload :Twitter,     File.join(File.dirname(__FILE__), 'message', 'twitter')
+
+    include Hashify
+    include Hashify::Json
+
     attr_accessor :body
-
-    # body
-    # sender
-    # receiver
-
-    # privacy
-
+    attr_accessor :from
+    attr_accessor :to
+    attr_accessor :enqueued_at
+    
+    hash_accessor :body, :from, :to
+    hash_convert  :enqueued_at => Hashify::Convert::Time
+    
     def initialize(body = nil)
       self.body = body
       yield self if block_given?
     end
-  
-    def to_json
-      {:body => body}.to_json
-    end
-  
-    def self.from_json(json)
-      data = JSON.parse(json)
-      Message.new do |m|
-        m.body = data['body']
-      end
-    end
-  
+    
   end
 end
