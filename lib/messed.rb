@@ -6,20 +6,17 @@ require 'em-jack'
 
 class Messed
   
-  autoload :Processing,  File.join(File.dirname(__FILE__), 'messed', 'processing')
   autoload :Message,     File.join(File.dirname(__FILE__), 'messed', 'message')
-  autoload :Respond,     File.join(File.dirname(__FILE__), 'messed', 'respond')
-  autoload :Helper,      File.join(File.dirname(__FILE__), 'messed', 'helper')
   autoload :Queue,       File.join(File.dirname(__FILE__), 'messed', 'queue')
   autoload :Controller,  File.join(File.dirname(__FILE__), 'messed', 'controller')
   autoload :Tasks,       File.join(File.dirname(__FILE__), 'messed', 'tasks')
   autoload :Booter,      File.join(File.dirname(__FILE__), 'messed', 'booter')
-  autoload :Base,        File.join(File.dirname(__FILE__), 'messed', 'base')
+  autoload :Interface,   File.join(File.dirname(__FILE__), 'messed', 'interface')
   autoload :Utils,       File.join(File.dirname(__FILE__), 'messed', 'utils')
   autoload :Matcher,     File.join(File.dirname(__FILE__), 'messed', 'matcher')
 
-  include Processing
-  include Respond
+  include Controller::Processing
+  include Controller::Respond
 
   after_processing :reset!
 
@@ -49,19 +46,22 @@ class Messed
 
   def with(*args, &block)
     matchers << if args.first.is_a?(Hash)
-      Matcher::Conditional.new(nil, args.first, &block)
+      Matcher::Conditional.new(nil, args.first)
     else
       Matcher::Conditional.new(*args, &block)
     end
+    matchers.last.destination = block
   end
 
   def otherwise(options = nil, &block)
     matchers << Matcher::Always.new(&block)
+    matchers.last.destination = block
   end
 
   def process_incoming
     loop do
       incoming.take { |message|
+        puts "processing message #{message.inspect}"
         process(message)
       }
     end
@@ -75,25 +75,18 @@ class Messed
   def process(message)
     self.message = message
     
-    controllers = Set.new
-    
     matchers.find {|matcher|
+      logger.debug "testing matching #{matcher.inspect}"
       if matcher.match?(message)
-        controllers << process_destination(matcher.destination)
+        logger.debug "matched! #{matcher.inspect}"
+        controller = process_destination(matcher.destination)
+        process_responses(controller.responses)
         matcher.stop_processing?
       else
         false
       end
     }
     
-    response = @router.recognize_path(message.body)
-    destination = if response
-      self.params = Hash[*response.params]
-      response.path.route.destination
-    else
-      process_default_destination
-    end
-    process_response(controller.response)
     controller.reset_processing! if controller.respond_to?(:reset_processing!)
     reset_processing!
   end
@@ -127,11 +120,11 @@ class Messed
   end
   protected :process_destination
 
-  def process_response(response)
-    logger.debug("processing #{response}")
-    if response
-      logger.debug("Putting #{response} onto outgoing queue")
-      self.outgoing = response
+  def process_responses(responses)
+    logger.debug("processing #{responses}")
+    if responses
+      logger.debug("Putting #{responses} onto outgoing queue")
+      responses.each {|response| self.outgoing << response }
     end
   end
   

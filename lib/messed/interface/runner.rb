@@ -1,7 +1,7 @@
 require 'thin'
 
 class Messed
-  class Base
+  class Interface
     class Runner
       
       attr_reader :runnable, :options, :detach

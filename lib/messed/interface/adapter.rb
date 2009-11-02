@@ -1,7 +1,7 @@
 require 'json'
 
 class Messed
-  class Base
+  class Interface
     class Adapter
       
       autoload :TwitterSearch,    File.join(File.dirname(__FILE__), 'adapter', 'twitter_search')
@@ -12,8 +12,8 @@ class Messed
         Registry[name] = class_name
       end
       
-      register_for_name 'twitter_search', 'Messed::Base::Adapter::TwitterSearch'
-      register_for_name 'twitter',        'Messed::Base::Adapter::Twitter'
+      register_for_name 'twitter_search', 'Messed::Interface::Adapter::TwitterSearch'
+      register_for_name 'twitter',        'Messed::Interface::Adapter::Twitter'
       
       def self.for_name(name)
         class_name = Registry[name]
@@ -22,10 +22,10 @@ class Messed
           raise("No adapter for #{name}")
       end
       
-      attr_reader :base
+      attr_reader :interface
       
-      def initialize(base)
-        @base = base
+      def initialize(interface)
+        @interface = interface
         init
       end
       

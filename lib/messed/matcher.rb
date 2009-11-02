@@ -1,12 +1,10 @@
 class Messed
   class Matcher
     
+    attr_accessor :destination
+
     def stop_processing?
       true
-    end
-    
-    def destination(block)
-      self.destination = block
     end
     
     class Conditional < Matcher
@@ -19,14 +17,14 @@ class Messed
       def match?(message)
         matches = true
         if @body_matcher
-          matches &&= @body_matcher =~ message.body
+          matches &&= @body_matcher === message.body
         end
 
         if @other_matchers
           keys = @other_matchers.keys
           unless matches
             key = keys.pop
-            matches &&= @body_matcher[key] =~ message.send(key)
+            matches &&= @other_matchers[key] === message.send(key)
           end
         end
         matches

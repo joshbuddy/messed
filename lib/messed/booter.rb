@@ -1,7 +1,7 @@
 class Messed
   class Booter
     
-    attr_reader :root_directory, :environment, :base_map, :application
+    attr_reader :root_directory, :environment, :interface_map, :application
     
     def initialize(root_directory, environment = 'development')
       @root_directory, @environment = root_directory, environment
@@ -38,10 +38,10 @@ class Messed
     end
     
     def load_adapters
-      @base_map = {}
+      @interface_map = {}
       adapter_configuration.each do |name, conf|
         puts "#{name} -> #{conf.inspect}"
-        @base_map[name] = Base.base_from_configuration(self, name, conf)
+        @interface_map[name] = Interface.interface_from_configuration(self, name, conf)
       end
     end
     

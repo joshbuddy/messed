@@ -1,5 +1,5 @@
 class Messed
-  class Base
+  class Interface
     class Adapter
       class TwitterSearch < Adapter
         
@@ -8,7 +8,7 @@ class Messed
         end
         
         def start(detach)
-          puts "Starting #{base.name.to_s}"
+          puts "Starting #{interface.name.to_s}"
           pid = EM.fork_reactor do
             trap("INT") { EM.stop; puts "\nmoooooooo ya later"; exit(0)}
             EM.run do
@@ -34,19 +34,19 @@ class Messed
           # do work.
           puts "query!!"
           
-          p base.configuration
+          p interface.configuration
           
           http = EM::Protocols::HttpClient.request(
-            :host => base.configuration['fetch']['host'],
+            :host => interface.configuration['fetch']['host'],
             :port => 80,
-            :request => base.configuration['fetch']['path'],
-            :query_string => Rack::Utils.build_query(base.configuration['fetch']['query'])
+            :request => interface.configuration['fetch']['path'],
+            :query_string => Rack::Utils.build_query(interface.configuration['fetch']['query'])
           )
           http.callback {|response|
             case response[:status]
             when 200
               data = JSON.parse(response[:content])
-              base.configuration['fetch']['query']['since_id'] = data['max_id']
+              interface.configuration['fetch']['query']['since_id'] = data['max_id']
               data['results'].each do |result|
                 message = Message::Twitter.new do |m|
                   m.body = result['text']
@@ -63,13 +63,15 @@ class Messed
                   #{"created_at"=>"Fri, 30 Oct 2009 09:42:30 +0000", "profile_image_url"=>"http://s.twimg.com/a/1256778767/images/default_profile_1_normal.png", "from_user"=>"fortune_sibanda", "text"=>"#SOS09 Section (24)(2)(a) of Bill requires community radios to comply with PFMA. Surely 2 onerous? Gvt dpts cant evn comply with PFMA!!", "to_user_id"=>nil, "id"=>5283471265, "geo"=>nil, "from_user_id"=>71467790, "iso_language_code"=>"en", "source"=>"&lt;a href=&quot;http://twitter.com/&quot;&gt;web&lt;/a&gt;"}         
                 end
                 
-                base.application.incoming << message
+                puts "adding message ... #{message.inspect}"
+                
+                interface.application.incoming << message
               end
             end
             #puts response[:status]
             #puts response[:headers]
             #puts response[:content]
-            EM.add_timer(base.configuration['interval']) do
+            EM.add_timer(interface.configuration['interval']) do
               perform_search
             end
           }

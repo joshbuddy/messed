@@ -7,11 +7,11 @@ class RunnerTask < Thor
   desc "adapter [NAME]", "start a runner (#{Messed::Booter.possible_adapters($root).join(', ')})"
   def adapter(name)
     booter = Messed::Booter.new($root, options.environment)
-    adapter = booter.base_map[name]
+    adapter = booter.interface_map[name]
     
     raise("unable to find adapter with name #{name}") unless adapter
     
-    Messed::Base::Runner.new(adapter, :detach => options.detach?).start
+    Messed::Interface::Runner.new(adapter, :detach => options.detach?).start
   end
   
   method_options :detach => false
@@ -20,7 +20,7 @@ class RunnerTask < Thor
   def application
     booter = Messed::Booter.new($root, options.environment)
     application = booter.application
-    Messed::Base::Runner.new(application, :detach => options.detach?).start
+    Messed::Interface::Runner.new(application, :detach => options.detach?).start
   end
   
 end
