@@ -2,6 +2,8 @@ class Messed
   class Queue
     class Beanstalk < Queue
 
+      include Logger::LoggingModule
+
       attr_accessor :application
       
       def initialize(tube, connection = 'localhost:11300')
@@ -11,10 +13,17 @@ class Messed
         @beanstalk.watch(tube)
       end
       
-      def take
+      def take(block = true)
         job = beanstalk.reserve
-        yield application.message_class.from_json(job.body)
-        job.delete
+        begin 
+          message = application.message_class.from_json(job.body) 
+        rescue JSON::ParserError
+          logger.error "malformed message #{job.body}"
+          job.delete
+        else
+          yield message
+          job.delete
+        end
       end
       
       def <<(message)
