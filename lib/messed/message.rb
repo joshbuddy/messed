@@ -15,6 +15,15 @@ class Messed
     hash_accessor :body, :from, :to
     hash_convert  :enqueued_at => Hashify::Convert::Time
     
+    def self.class_for_type(type)
+      case type
+      when :twitter
+        Twitter
+      else
+        raise type
+      end
+    end
+
     def initialize(body = nil)
       self.body = body
       yield self if block_given?

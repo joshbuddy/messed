@@ -24,20 +24,38 @@ class Messed
   
   after_processing :reset!
   
-  attr_accessor :outgoing, :incoming, :controller
-  attr_reader :matchers, :session_store
+  attr_accessor :controller
+  attr_reader :outgoing, :incoming, :matchers, :session_store, :type
   
   def initialize(type = :twitter, &block)
     @type = type
     @matchers = []
     @session_store = Session::Memcache.new
-    instance_eval(&block) if block
+    match(&block) if block
+  end
+  
+  def match(&block)
+    instance_eval(&block)
+  end
+  
+  def reset!
+    matchers.clear
   end
   
   def message_class
-    Message::Twitter
+    Message.class_for_type(type)
   end
-
+  
+  def incoming=(incoming)
+    @incoming = incoming
+    incoming.application = self
+  end
+  
+  def outgoing=(outgoing)
+    @outgoing = outgoing
+    outgoing.application = self
+  end
+  
   def with(*args, &block)
     matchers << if args.first.is_a?(Hash)
       Matcher::Conditional.new(nil, args.first)
@@ -51,9 +69,10 @@ class Messed
     matchers << Matcher::Always.new(&block)
     matchers.last.destination = block
   end
-
-  def process_incoming
-    loop do
+  alias_method :always, :otherwise
+  
+  def process_incoming(continue_forever = true)
+    while continue_forever || incoming.jobs_available?
       incoming.take { |message|
         logger.debug "processing message #{message.inspect}"
         process(message)

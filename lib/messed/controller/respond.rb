@@ -2,16 +2,18 @@ class Messed
   class Controller
     module Respond
     
-      attr_reader :responses
-    
       def self.included(c)
         c.instance_eval "
           after_processing :clear_responses
         "
       end
     
+      def responses
+        @response ||= []
+      end
+    
       def clear_responses
-        self.responses ? self.responses.clear : @responses = []
+        responses.clear
       end
     
       def say(body)

@@ -13,7 +13,7 @@ class Messed
         @body_matcher = body_matcher
         @other_matchers = other_matchers
       end
-
+      
       def match?(message)
         matches = true
         if @body_matcher
@@ -29,18 +29,14 @@ class Messed
         end
         matches
       end
-
-
     end
     
     class Always < Matcher
-      
       
       def match?(message)
         true
       end
       
-
     end
     
   end
