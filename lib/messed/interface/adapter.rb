@@ -4,6 +4,8 @@ class Messed
   class Interface
     class Adapter
       
+      include Logger::LoggingModule
+      
       autoload :TwitterSearch,    File.join(File.dirname(__FILE__), 'adapter', 'twitter_search')
       autoload :Twitter,          File.join(File.dirname(__FILE__), 'adapter', 'twitter')
       

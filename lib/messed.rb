@@ -14,34 +14,28 @@ class Messed
   autoload :Interface,   File.join(File.dirname(__FILE__), 'messed', 'interface')
   autoload :Utils,       File.join(File.dirname(__FILE__), 'messed', 'utils')
   autoload :Matcher,     File.join(File.dirname(__FILE__), 'messed', 'matcher')
-
+  autoload :Logger,      File.join(File.dirname(__FILE__), 'messed', 'logger')
+  autoload :Session,     File.join(File.dirname(__FILE__), 'messed', 'session')
+  
+  include Logger::LoggingModule
+  include Controller::Helper
   include Controller::Processing
   include Controller::Respond
-
-  after_processing :reset!
-
-  attr_accessor :params, :message, :outgoing, :incoming, :controller
-  attr_reader :logger, :matchers
   
-  @@logger = Logger.new(STDOUT)
-  @@logger.level = Logger::DEBUG
-
-  def self.logger
-    @@logger
-  end
-
+  after_processing :reset!
+  
+  attr_accessor :outgoing, :incoming, :controller
+  attr_reader :matchers, :session_store
+  
   def initialize(type = :twitter, &block)
     @type = type
     @matchers = []
+    @session_store = Session::Memcache.new
     instance_eval(&block) if block
   end
   
   def message_class
     Message::Twitter
-  end
-
-  def logger
-    self.class.logger
   end
 
   def with(*args, &block)
@@ -61,34 +55,38 @@ class Messed
   def process_incoming
     loop do
       incoming.take { |message|
-        puts "processing message #{message.inspect}"
+        logger.debug "processing message #{message.inspect}"
         process(message)
       }
     end
   end
 
   def start(detach)
-    puts "starting application! detach? #{detach}"
+    logger.debug "starting application! detach? #{detach}"
     process_incoming
   end
   
   def process(message)
     self.message = message
     
-    matchers.find {|matcher|
-      logger.debug "testing matching #{matcher.inspect}"
-      if matcher.match?(message)
-        logger.debug "matched! #{matcher.inspect}"
-        controller = process_destination(matcher.destination)
-        process_responses(controller.responses)
-        matcher.stop_processing?
-      else
-        false
+    session_store.with(message.unique_id) do |session|
+      self.session = session
+      
+      matchers.find do |matcher|
+        logger.debug "testing matching #{matcher.inspect}"
+        if matcher.match?(message)
+          logger.debug "matched! #{matcher.inspect}"
+          controller = process_destination(matcher.destination)
+          process_responses(controller.responses)
+          matcher.stop_processing?
+        else
+          false
+        end
       end
-    }
     
-    controller.reset_processing! if controller.respond_to?(:reset_processing!)
-    reset_processing!
+      controller.reset_processing! if controller.respond_to?(:reset_processing!)
+      reset_processing!
+    end
   end
 
   def extract_destination(options, block)
@@ -102,6 +100,7 @@ class Messed
     self.controller = nil
     self.message = nil
     self.params = nil
+    self.session = nil
   end
   protected :reset!
   
@@ -121,9 +120,8 @@ class Messed
   protected :process_destination
 
   def process_responses(responses)
-    logger.debug("processing #{responses}")
-    if responses
-      logger.debug("Putting #{responses} onto outgoing queue")
+    if responses && !responses.size.zero?
+      logger.debug("Putting #{responses.inspect} onto outgoing queue")
       responses.each {|response| self.outgoing << response }
     end
   end

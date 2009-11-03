@@ -4,14 +4,14 @@ class RunnerTask < Thor
 
   method_options :detach => false
   method_options :environment => "development"
-  desc "adapter [NAME]", "start a runner (#{Messed::Booter.possible_adapters($root).join(', ')})"
-  def adapter(name)
+  desc "interface [NAME]", "starts an interface (#{Messed::Booter.possible_interfaces($root).join(', ')})"
+  def interface(name)
     booter = Messed::Booter.new($root, options.environment)
-    adapter = booter.interface_map[name]
+    interface = booter.interface_map[name]
     
-    raise("unable to find adapter with name #{name}") unless adapter
+    raise("unable to find an interface with name the `#{name}'") unless interface
     
-    Messed::Interface::Runner.new(adapter, :detach => options.detach?).start
+    Messed::Interface::Runner.new(interface, :detach => options.detach?).start
   end
   
   method_options :detach => false

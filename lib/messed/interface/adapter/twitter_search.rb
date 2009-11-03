@@ -8,9 +8,9 @@ class Messed
         end
         
         def start(detach)
-          puts "Starting #{interface.name.to_s}"
+          logger.info "Starting #{interface.name.to_s}"
           pid = EM.fork_reactor do
-            trap("INT") { EM.stop; puts "\nmoooooooo ya later"; exit(0)}
+            trap("INT") { EM.stop; logger.info "\nmoooooooo ya later"; exit(0)}
             EM.run do
               EM.next_tick do
                 perform_search
@@ -32,9 +32,7 @@ class Messed
         
         def perform_search
           # do work.
-          puts "query!!"
-          
-          p interface.configuration
+          logger.debug "query for twitter_search #{Rack::Utils.build_query(interface.configuration['fetch']['query'])}"
           
           http = EM::Protocols::HttpClient.request(
             :host => interface.configuration['fetch']['host'],
@@ -63,14 +61,9 @@ class Messed
                   #{"created_at"=>"Fri, 30 Oct 2009 09:42:30 +0000", "profile_image_url"=>"http://s.twimg.com/a/1256778767/images/default_profile_1_normal.png", "from_user"=>"fortune_sibanda", "text"=>"#SOS09 Section (24)(2)(a) of Bill requires community radios to comply with PFMA. Surely 2 onerous? Gvt dpts cant evn comply with PFMA!!", "to_user_id"=>nil, "id"=>5283471265, "geo"=>nil, "from_user_id"=>71467790, "iso_language_code"=>"en", "source"=>"&lt;a href=&quot;http://twitter.com/&quot;&gt;web&lt;/a&gt;"}         
                 end
                 
-                puts "adding message ... #{message.inspect}"
-                
                 interface.application.incoming << message
               end
             end
-            #puts response[:status]
-            #puts response[:headers]
-            #puts response[:content]
             EM.add_timer(interface.configuration['interval']) do
               perform_search
             end
