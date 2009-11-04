@@ -3,6 +3,7 @@ require 'logger'
 require 'activesupport'
 require 'time'
 require 'em-jack'
+require 'hwia'
 
 class Messed
   

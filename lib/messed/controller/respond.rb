@@ -20,24 +20,15 @@ class Messed
         set_response response
       end
 
-      def reply(response, options = nil)
-        if options && options[:to]
-          set_response response, :to => options[:to]
-        elsif message.from
-          set_response response, :to => message.from
-        else
-          raise 'no implict recipient'
-        end
+      def reply(response, options = {})
+        options[:to] ||= message.from
+        options[:in_reply_to] ||= message
+        set_response response, options
       end
 
-      def whisper(response, options = nil)
-        if options && options[:to]
-          set_response body, :to => options[:to], :visibility => :private
-        elsif message.from
-          set_response body, :to => message.from, :visibility => :private
-        else
-          raise 'no implict recipient'
-        end
+      def whisper(response, options = {})
+        options[:visibility] = :private
+        reply(response, options)
       end
     
       def set_response(response, options = nil)

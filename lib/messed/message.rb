@@ -11,9 +11,11 @@ class Messed
     attr_accessor :from
     attr_accessor :to
     attr_accessor :enqueued_at
+    attr_accessor :in_reply_to
     
     hash_accessor :body, :from, :to
     hash_convert  :enqueued_at => Hashify::Convert::Time
+    hash_convert  :in_reply_to => [proc{|x| x && x.to_hash}, proc{|x, parent| x && parent.class.from_hash(x)}]
     
     def self.class_for_type(type)
       case type

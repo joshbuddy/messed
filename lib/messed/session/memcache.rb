@@ -6,8 +6,12 @@ class Messed
   class Session
     class Memcache < Session
       
-      def initialize(config = "localhost:11211")
+      def initialize(config = "127.0.0.1:11211")
         @connection = Memcached.new(config)
+      end
+      
+      def reset!(id)
+        connection.delete(id)
       end
       
       def with(id)
@@ -23,9 +27,9 @@ class Messed
       attr_reader :connection
       
       def data(id)
-        JSON.parse(connection.get(key(id)))
-      rescue
-        {}
+        JSON.parse(connection.get(key(id))).strhash
+      rescue Memcached::NotFound
+        StrHash.new
       end
       
       def key(id)

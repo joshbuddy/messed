@@ -6,7 +6,7 @@ class Messed
 
       attr_accessor :application
       
-      def initialize(tube, connection = 'localhost:11300')
+      def initialize(tube, connection = '127.0.0.1:11300')
         @beanstalk = ::Beanstalk::Pool.new(Array(connection))
         @tube = tube
         @beanstalk.use(tube)
@@ -36,9 +36,7 @@ class Messed
       
       def drain!
         while jobs_available?
-          take do |job|
-            'do nothing'
-          end
+          beanstalk.reserve.delete
         end
       end
       

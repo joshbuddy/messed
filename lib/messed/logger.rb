@@ -10,12 +10,21 @@ class Messed
           Messed::Logger.instance.logger
         end
       
+        def self.logger=(logger)
+          Messed::Logger.instance.logger = logger
+        end
+      
         HERE_DOC
       end
       
       def logger
         Messed::Logger.instance.logger
       end
+
+      def logger=(logger)
+        Messed::Logger.instance.logger = logger
+      end
+
     end
     
     def initialize
@@ -30,13 +39,15 @@ class Messed
     end
     
     def setup
-      @logger = ::Logger.new(STDOUT)
+      @logger ||= ::Logger.new(STDOUT)
     end
 
     def logger
       setup
       @logger
     end
+    
+    attr_writer :logger
     
   end
 end

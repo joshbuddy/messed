@@ -12,8 +12,6 @@ class Messed
       @application = Messed.new
       @application.incoming = create_incoming_queue
       @application.outgoing = create_outgoing_queue
-      p File.read(runner_file)
-      
       @application.instance_eval(File.read(runner_file))
     end
     
@@ -56,11 +54,11 @@ class Messed
     end
     
     def create_incoming_queue
-      Messed::Queue::Beanstalk.new(application, 'incoming-messages')
+      Messed::Queue::Beanstalk.new('incoming-messages')
     end
     
     def create_outgoing_queue
-      Messed::Queue::Beanstalk.new(application, 'outgoing-messages')
+      Messed::Queue::Beanstalk.new('outgoing-messages')
     end
     
   end
