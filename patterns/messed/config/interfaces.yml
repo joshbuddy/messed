@@ -9,8 +9,8 @@ development: &default
       path: search.json
     interval: 10
   
-  twitter:
-    mode: [incoming, outgoing]
+  twitter_sender:
+    mode: outgoing
     adapter: twitter
     username: joshbuddy
     password: testing

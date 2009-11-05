@@ -23,17 +23,4 @@ describe "A Messed application" do
     @app.outgoing.take{|m| m.body.should == message.body}
   end
   
-  it "should pass a message in and back out as the reply field" do
-    @app.match {
-      always do
-        reply "thats a nice message!"
-      end
-    }
-    
-    message = @app.message_class.new('my message')
-    @app.incoming << message
-    @app.process_incoming(false)
-    @app.outgoing.take{|m| m.body.should == 'thats a nice message!'; m.in_reply_to.body.should == message.body}
-  end
-  
 end

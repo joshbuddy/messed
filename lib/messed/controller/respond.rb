@@ -27,7 +27,7 @@ class Messed
       end
 
       def whisper(response, options = {})
-        options[:visibility] = :private
+        options[:private] = true
         reply(response, options)
       end
     

@@ -7,7 +7,7 @@ class Messed
       include Logger::LoggingModule
       
       autoload :TwitterSearch,    File.join(File.dirname(__FILE__), 'adapter', 'twitter_search')
-      autoload :Twitter,          File.join(File.dirname(__FILE__), 'adapter', 'twitter')
+      autoload :TwitterSender,    File.join(File.dirname(__FILE__), 'adapter', 'twitter_sender')
       
       Registry = {}
       def self.register_for_name(name, class_name)

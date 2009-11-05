@@ -57,7 +57,6 @@ class Messed
                   m.from_user_id = result['from_user_id']
                   m.iso_language_code = result['iso_language_code']
                   m.source = result['source']
-
                   #{"created_at"=>"Fri, 30 Oct 2009 09:42:30 +0000", "profile_image_url"=>"http://s.twimg.com/a/1256778767/images/default_profile_1_normal.png", "from_user"=>"fortune_sibanda", "text"=>"#SOS09 Section (24)(2)(a) of Bill requires community radios to comply with PFMA. Surely 2 onerous? Gvt dpts cant evn comply with PFMA!!", "to_user_id"=>nil, "id"=>5283471265, "geo"=>nil, "from_user_id"=>71467790, "iso_language_code"=>"en", "source"=>"&lt;a href=&quot;http://twitter.com/&quot;&gt;web&lt;/a&gt;"}         
                 end
                 
