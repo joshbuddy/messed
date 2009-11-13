@@ -10,7 +10,7 @@ class Messed
         def start(detach)
           logger.info "Starting #{interface.name.to_s}"
           pid = EM.fork_reactor do
-            trap("INT") { EM.stop; logger.info "\nmoooooooo ya later"; exit(0)}
+            trap("INT") { quit }
             EM.run do
               EM.next_tick do
                 perform_search
@@ -19,31 +19,28 @@ class Messed
           end
           
           if detach
-            File.open(options[:pid], 'w') {|f| f << pid}
+            File.open(interface.configuration['pid_file'], 'w') {|f| f << pid} if interface.configuration['pid_file']
             Process.detach(pid)
           else
             trap("INT") { }
             Process.wait(pid)
           end
-          
           pid
-          
+        end
+        
+        def quit
+          EM.stop; logger.info "\nmoooooooo ya later"; exit(0)
         end
         
         def perform_search
           # do work.
           logger.debug "query for twitter_search #{Rack::Utils.build_query(interface.configuration['fetch']['query'])}"
-          
-          http = EM::Protocols::HttpClient.request(
-            :host => interface.configuration['fetch']['host'],
-            :port => 80,
-            :request => interface.configuration['fetch']['path'],
-            :query_string => Rack::Utils.build_query(interface.configuration['fetch']['query'])
-          )
-          http.callback {|response|
-            case response[:status]
+          http = EventMachine::HttpRequest.new("http://#{interface.configuration['fetch']['host']}/#{interface.configuration['fetch']['path']}").
+            get(:query => Rack::Utils.build_query(interface.configuration['fetch']['query']), :timeout => 30)
+          http.callback {
+            case http.response_header.status
             when 200
-              data = JSON.parse(response[:content])
+              data = JSON.parse(http.response)
               interface.configuration['fetch']['query']['since_id'] = data['max_id']
               data['results'].each do |result|
                 message = Message::Twitter.new do |m|

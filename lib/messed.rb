@@ -2,6 +2,8 @@ require 'hashify'
 require 'logger'
 require 'activesupport'
 require 'time'
+require 'eventmachine'
+require 'em-http'
 require 'em-jack'
 require 'hwia'
 

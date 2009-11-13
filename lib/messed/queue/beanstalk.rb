@@ -5,6 +5,7 @@ class Messed
       include Logger::LoggingModule
 
       attr_accessor :application
+      attr_reader   :tube
       
       def initialize(tube, connection = '127.0.0.1:11300')
         @beanstalk = ::Beanstalk::Pool.new(Array(connection))
@@ -44,7 +45,7 @@ class Messed
         beanstalk.stats_tube(tube)['current-jobs-ready']
       end
       protected
-      attr_reader :beanstalk, :tube
+      attr_reader :beanstalk
       
     end
   end
