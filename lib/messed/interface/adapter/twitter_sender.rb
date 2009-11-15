@@ -22,11 +22,9 @@ class Messed
         def process_outgoing(job, message)
           if message.private?
             req = EventMachine::HttpRequest.new("http://twitter.com/direct_messages/new.json")
-            http = if message.in_reply_to
-              req.post(:body => {:user => message.to_user_id, :text => message.body, :in_reply_to => message.in_reply_to}, :timeout => 30)
-            else
-              req.post(:body => {:user => message.to_user_id, :text => message.body}, :timeout => 30)
-            end
+            data = {:body => {:user => message.to_user_id, :text => message.body}, :timeout => 30, :head => {'authorization' => [interface.configuration['username'], interface.configuration['username']]}}
+            data[:body][:in_reply_to] = message.in_reply_to if message.in_reply_to
+            http = req.post(data)
             http.callback {
               job.delete
             }
@@ -38,13 +36,6 @@ class Messed
             }
           end
           
-          #httpauth = Twitter::HTTPAuth.new(interface.configuration['username'], interface.configuration['username'])
-          #client = Twitter::Base.new(httpauth)
-          #if message.in_reply_to
-          #  client.update(message.body, :in_reply_to_status_id => message.in_reply_to.id)
-          #else
-          #  client.update(message.body)
-          #end
         end
         
       end
