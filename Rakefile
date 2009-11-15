@@ -12,8 +12,11 @@ begin
     s.homepage = "http://github.com/joshbuddy/messed"
     s.authors = ["Joshua Hull"]
     s.files = FileList["[A-Z]*", "{lib,spec,rails}/**/*"]
-    # TODO define these correctly
-    #s.add_dependency 'fuzzyhash', '>=0.0.9'
+    s.add_dependency 'eventmachine'
+    s.add_dependency 'em-http-request'
+    s.add_dependency 'em-beanstalk'
+    s.add_dependency 'hashify'
+    s.add_dependency 'hwia'
   end
   Jeweler::GemcutterTasks.new
   Jeweler::RubyforgeTasks.new do |rubyforge|

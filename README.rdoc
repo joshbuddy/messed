@@ -1,0 +1,17 @@
+= Messed
+
+== Short messaging framework
+
+We deal with short messages all the time. Email, SMS, twitter and XMPP are examples of such. This framework attempts to make it simple to deal with these various types of services.
+
+== Getting started
+
+Generate your app, fill it in.
+
+== Topology
+
+  /----------\               Worker               /----------\
+  |          |               Worker               |          |
+  | Incoming |==> Queue ==>  Worker ==> Queue ==> | Outgoing |
+  |          |               Worker               |          |
+  \----------/               Worker               \----------/
