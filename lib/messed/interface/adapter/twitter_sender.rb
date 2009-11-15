@@ -6,36 +6,38 @@ class Messed
     class Adapter
       class TwitterSender < Adapter
         
-        def start(detach)
-          logger.info "Starting #{interface.name.to_s}"
-          pid = EM.fork_reactor do
-            trap("INT") { quit }
-            EM.run do
-              jack = EMJack::Connection.new
-              jack.use(interface.application.outgoing.tube) do
-                jack.each_job do |job|
-                  process_outgoing(job, interface.application.message_class.from_json(job.body))
-                end
+        include Messed::Interface::EMRunner
+        
+        def do_work
+          jack = EMJack::Connection.new
+          jack.watch(interface.application.outgoing.tube) do
+            jack.use(interface.application.outgoing.tube) do
+              jack.each_job do |job|
+                process_outgoing(job, interface.application.message_class.from_json(job.body))
               end
             end
           end
-          
-          if detach
-            File.open(interface.configuration['pid_file'], 'w') {|f| f << pid} if interface.configuration['pid_file']
-            Process.detach(pid)
-          else
-            trap("INT") { }
-            Process.wait(pid)
-          end
-          pid
-        end
-
-        def quit
-          EM.stop; logger.info "\nmoooooooo ya later"; exit(0)
         end
         
-        def process_outgoing(message)
-          job.delete
+        def process_outgoing(job, message)
+          if message.private?
+            req = EventMachine::HttpRequest.new("http://twitter.com/direct_messages/new.json")
+            http = if message.in_reply_to
+              req.post(:body => {:user => message.to_user_id, :text => message.body, :in_reply_to => message.in_reply_to}, :timeout => 30)
+            else
+              req.post(:body => {:user => message.to_user_id, :text => message.body}, :timeout => 30)
+            end
+            http.callback {
+              job.delete
+            }
+          else
+            http = EventMachine::HttpRequest.new("http://twitter.com/statuses/update.json").
+              post(:body => {:status => message.body}, :timeout => 30)
+            http.callback {
+              job.delete
+            }
+          end
+          
           #httpauth = Twitter::HTTPAuth.new(interface.configuration['username'], interface.configuration['username'])
           #client = Twitter::Base.new(httpauth)
           #if message.in_reply_to

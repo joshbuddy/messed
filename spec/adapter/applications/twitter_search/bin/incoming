@@ -1,0 +1,884 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+class IncomingRunnerTask < Thor
+
+  method_options :detach => false
+  method_options :environment => "development"
+  desc "start [NAME]", "start an incoming instance"
+  def start(name = nil)
+    application = Messed::Booter.new(File.expand_path(File.join(File.dirname(__FILE__), '..')), options.environment)
+    incoming = if name.nil? and application.incoming_map.size == 1
+      application.incoming_map.values.first
+    elsif application.incoming_map.key?(name)
+      application.incoming_map[name]
+    else
+      raise(name ? "unable to find incoming with name #{name}" : "You have no incoming setup.")
+    end
+    
+    Messed::Interface::Runner.new(incoming).start
+  end
+  
+end
+
+IncomingRunnerTask.start
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

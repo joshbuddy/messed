@@ -13,7 +13,6 @@ class Messed
       end
       
       def start
-        
         runnable.start(detach)
       end
       

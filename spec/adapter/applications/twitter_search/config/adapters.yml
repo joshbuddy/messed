@@ -1,0 +1,13 @@
+development: &default
+  search:
+    mode: incoming
+    adapter: twitter_search
+    fetch:
+      query:
+        q: '#sos09'
+      host: search.twitter.com
+      path: search.json
+    interval: 10
+
+production:
+  *default

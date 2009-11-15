@@ -17,13 +17,13 @@ class Messed
       end
     
       def say(response)
-        set_response response
+        set_response(response)
       end
 
       def reply(response, options = {})
         options[:to] ||= message.from
         options[:in_reply_to] ||= message
-        set_response response, options
+        set_response(response, options)
       end
 
       def whisper(response, options = {})
@@ -39,7 +39,6 @@ class Messed
             message.send(:"#{key}=", value)
           end
         end
-        
         self.responses << message
       end
     

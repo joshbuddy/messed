@@ -3,36 +3,13 @@ class Messed
     class Adapter
       class TwitterSearch < Adapter
         
+        include Messed::Interface::EMRunner
+
         def type
           :twitter
         end
         
-        def start(detach)
-          logger.info "Starting #{interface.name.to_s}"
-          pid = EM.fork_reactor do
-            trap("INT") { quit }
-            EM.run do
-              EM.next_tick do
-                perform_search
-              end
-            end
-          end
-          
-          if detach
-            File.open(interface.configuration['pid_file'], 'w') {|f| f << pid} if interface.configuration['pid_file']
-            Process.detach(pid)
-          else
-            trap("INT") { }
-            Process.wait(pid)
-          end
-          pid
-        end
-        
-        def quit
-          EM.stop; logger.info "\nmoooooooo ya later"; exit(0)
-        end
-        
-        def perform_search
+        def do_work
           # do work.
           logger.debug "query for twitter_search #{Rack::Utils.build_query(interface.configuration['fetch']['query'])}"
           http = EventMachine::HttpRequest.new("http://#{interface.configuration['fetch']['host']}/#{interface.configuration['fetch']['path']}").
