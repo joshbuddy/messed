@@ -11,13 +11,14 @@ begin
     s.email = "joshbuddy@gmail.com"
     s.homepage = "http://github.com/joshbuddy/messed"
     s.authors = ["Joshua Hull"]
-    s.files = FileList["[A-Z]*", "{lib,spec,rails}/**/*"]
+    s.files = FileList["[A-Z]*", "{lib,spec,bin,application_spec,patterns}/**/*"]
     s.add_dependency 'eventmachine'
     s.add_dependency 'em-http-request'
     s.add_dependency 'em-beanstalk'
     s.add_dependency 'hashify'
-    s.add_dependency 'hwia'
+    s.add_dependency 'methodmissing-hwia', '>=1.0.2'
     s.add_dependency 'activesupport'
+    s.add_dependency 'dressmaker', '>=0.0.2'
   end
   Jeweler::GemcutterTasks.new
   Jeweler::RubyforgeTasks.new do |rubyforge|
