@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+begin
+  require 'messed'
+rescue LoadError
+  if ENV['MESSED_HOME']
+    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+  else  
+    raise("no messed!")
+  end
+end
+
+require 'thor'
+
+class WebTask < Thor
+
+  method_options :detach => false
+  method_options :environment => "development"
+  desc "start [NAME]", "start an incoming instance"
+  def start(name = nil)
+    
+    
+    
+  end
+  
+end
+
+IncomingRunnerTask.start

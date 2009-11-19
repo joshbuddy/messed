@@ -17,6 +17,7 @@ begin
     s.add_dependency 'em-beanstalk'
     s.add_dependency 'hashify'
     s.add_dependency 'hwia'
+    s.add_dependency 'activesupport'
   end
   Jeweler::GemcutterTasks.new
   Jeweler::RubyforgeTasks.new do |rubyforge|
@@ -29,13 +30,23 @@ end
 
 require 'spec'
 require 'spec/rake/spectask'
-task :spec => 'spec:all'
+task :spec => ['spec:all', 'spec:application']
 namespace(:spec) do
   Spec::Rake::SpecTask.new(:all) do |t|
     t.spec_opts ||= []
     t.spec_opts << "-rubygems"
     t.spec_opts << "--options" << "spec/spec.opts"
     t.spec_files = FileList['spec/**/*_spec.rb']
+  end
+
+  Spec::Rake::SpecTask.new(:application) do |t|
+    ENV['MESSED_HOME'] = '..'
+    t.ruby_opts ||= []
+    t.ruby_opts << '-Capplication_spec'
+    t.spec_opts ||= []
+    t.spec_opts << "-rubygems"
+    t.spec_opts << "--options" << "spec/spec.opts"
+    t.spec_files = FileList['application_spec/spec/**/*_spec.rb'].map{|f| f[/application_spec\/(.*)/, 1]}
   end
 
 end

@@ -10,8 +10,13 @@ Generate your app, fill it in.
 
 == Topology
 
-  /----------\               Worker               /----------\
-  |          |               Worker               |          |
-  | Incoming |==> Queue ==>  Worker ==> Queue ==> | Outgoing |
-  |          |               Worker               |          |
-  \----------/               Worker               \----------/
+  /----------\                   Worker                   /----------\
+  |          |    /-------\      Worker     /-------\     |          |
+  | Incoming |==> | Queue | ==>  Worker ==> | Queue | ==> | Outgoing |
+  |          |    \-------/      Worker     \-------/     |          |
+  \----------/                   Worker                   \----------/
+
+== Sample app
+
+Let's listen to every tweet your friend sends you, and, if its in delicious, add it, otherwise, reply with a message saying how much you enjoyed that link.
+

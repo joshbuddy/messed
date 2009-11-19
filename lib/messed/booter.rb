@@ -40,7 +40,7 @@ class Messed
     def load_interfaces
       @interface_map = {}
       interface_configuration.each do |name, conf|
-        logger.info "#{name} -> #{conf.inspect}"
+        logger.info "Loading interface `#{name}'"
         @interface_map[name] = Interface.interface_from_configuration(self, name, conf)
       end
     end

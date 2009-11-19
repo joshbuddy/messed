@@ -17,7 +17,7 @@ class Messed
       def take(block = true)
         job = beanstalk.reserve
         begin 
-          message = application.message_class.from_json(job.body) 
+          message = application.message_class.from_json(job.body)
         rescue JSON::ParserError
           logger.error "malformed message #{job.body}"
           job.delete

@@ -8,12 +8,16 @@ class Messed
         
         include Messed::Interface::EMRunner
         
+        def message_class
+          Messed::Message::Twitter
+        end
+        
         def do_work
           jack = EMJack::Connection.new
           jack.watch(interface.application.outgoing.tube) do
             jack.use(interface.application.outgoing.tube) do
               jack.each_job do |job|
-                process_outgoing(job, interface.application.message_class.from_json(job.body))
+                process_outgoing(job, message_class.from_json(job.body))
               end
             end
           end

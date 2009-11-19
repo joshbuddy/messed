@@ -5,6 +5,7 @@ require 'eventmachine'
 require 'em-http'
 require 'em-jack'
 require 'hwia'
+require 'activesupport'
 
 class Messed
   
@@ -77,7 +78,7 @@ class Messed
     while continue_forever || incoming.jobs_available?
       incoming.take { |message|
         logger.debug "processing message #{message.inspect}"
-        process(message)
+        process_responses process(message)
       }
     end
   end
@@ -88,6 +89,8 @@ class Messed
   end
   
   def process(message)
+    responses = []
+    
     self.message = message
     
     session_store.with(message.unique_id) do |session|
@@ -98,7 +101,7 @@ class Messed
         if matcher.match?(message)
           logger.debug "matched! #{matcher.inspect}"
           controller = process_destination(matcher.destination)
-          process_responses(controller.responses)
+          responses.concat(controller.responses)
           matcher.stop_processing?
         else
           false
@@ -108,6 +111,7 @@ class Messed
       controller.reset_processing! if controller.respond_to?(:reset_processing!)
       reset_processing!
     end
+    responses
   end
 
   def extract_destination(options, block)

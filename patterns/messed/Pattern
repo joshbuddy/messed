@@ -1,7 +1,6 @@
 desc "make executable"
-directory '/bin' do |dir|
+directory.matches('/bin') do |dir|
   dir.for('*') { |f|
-    
     
     new_exec = <<-HERE_DOC
 #!/usr/bin/env ruby
@@ -19,9 +18,14 @@ end
 
 require 'thor'
 
-#{File.read(f)}
+#{File.read(f.path)}
     HERE_DOC
-    File.open(f, 'w') {|out| out << new_exec}
+    File.open(f.path, 'w') {|out| out << new_exec}
     File.chmod(0755, f)
   }
+end
+
+desc "set application name to #{options[:app_name]}"
+files.all do |f|
+  f.gsub!('__APP_NAME__', options[:app_name].inspect)
 end
