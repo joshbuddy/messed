@@ -21,7 +21,7 @@ require 'thor'
 #{File.read(f.path)}
     HERE_DOC
     File.open(f.path, 'w') {|out| out << new_exec}
-    File.chmod(0755, f)
+    File.chmod(0755, f.path)
   }
 end
 
