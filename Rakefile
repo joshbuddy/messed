@@ -19,6 +19,9 @@ begin
     s.add_dependency 'methodmissing-hwia', '>=1.0.2'
     s.add_dependency 'activesupport'
     s.add_dependency 'dressmaker', '>=0.0.3'
+    s.add_dependency 'beanstalk-client'
+    s.add_dependency 'rspec'
+    s.add_dependency 'json'
   end
   Jeweler::GemcutterTasks.new
   Jeweler::RubyforgeTasks.new do |rubyforge|

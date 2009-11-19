@@ -8,12 +8,16 @@ development: &default
       host: search.twitter.com
       path: search.json
     interval: 10
-  
+    status:
+      port: 9000
+    
   twitter_sender:
     mode: outgoing
     adapter: twitter_sender
     username: joshbuddy
     password: testing
+    status:
+      port: 9010
 
 production:
   *default

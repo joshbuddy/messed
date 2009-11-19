@@ -4,9 +4,31 @@ class Messed
       class TwitterSearch < Adapter
         
         include Messed::Interface::EMRunner
+        
+        attr_accessor :started_at, :packets_processed, :errors, :last_error, :last_search, :last_status
+        
+        def init
+          @started_at = Time.new
+          @packets_processed = 0
+          @errors = 0
+          @last_error = nil
+          @last_search = nil
+          @last_status = nil
+        end
 
         def type
           :twitter
+        end
+        
+        def status
+          {
+            :started_at => started_at,
+            :packets_processed => packets_processed,
+            :errors => errors,
+            :last_error => last_error,
+            :last_search => last_search,
+            :last_status => last_status
+          }
         end
         
         def do_work
@@ -15,8 +37,10 @@ class Messed
           http = EventMachine::HttpRequest.new("http://#{interface.configuration['fetch']['host']}/#{interface.configuration['fetch']['path']}").
             get(:query => Rack::Utils.build_query(interface.configuration['fetch']['query']), :timeout => 30)
           http.callback {
+            self.last_status = http.response_header.status
             case http.response_header.status
             when 200
+              self.last_search = Time.new
               data = JSON.parse(http.response)
               interface.configuration['fetch']['query']['since_id'] = data['max_id']
               data['results'].each do |result|
@@ -31,15 +55,18 @@ class Messed
                   m.from_user_id = result['from_user_id']
                   m.iso_language_code = result['iso_language_code']
                   m.source = result['source']
-                  #{"created_at"=>"Fri, 30 Oct 2009 09:42:30 +0000", "profile_image_url"=>"http://s.twimg.com/a/1256778767/images/default_profile_1_normal.png", "from_user"=>"fortune_sibanda", "text"=>"#SOS09 Section (24)(2)(a) of Bill requires community radios to comply with PFMA. Surely 2 onerous? Gvt dpts cant evn comply with PFMA!!", "to_user_id"=>nil, "id"=>5283471265, "geo"=>nil, "from_user_id"=>71467790, "iso_language_code"=>"en", "source"=>"&lt;a href=&quot;http://twitter.com/&quot;&gt;web&lt;/a&gt;"}         
                 end
-                
+                self.packets_processed += 1
                 interface.application.incoming << message
               end
             end
             EM.add_timer(interface.configuration['interval']) do
               perform_search
             end
+          }
+          http.errback {
+            self.errors += 1
+            self.last_error = Time.new
           }
         end
         
