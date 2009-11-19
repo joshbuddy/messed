@@ -1,8 +1,7 @@
 desc "make executable"
 directory.matches('/bin') do |dir|
   dir.for('*') { |f|
-    
-    new_exec = <<-HERE_DOC
+    f.append! <<-HERE_DOC
 #!/usr/bin/env ruby
 
 require 'rubygems'
@@ -20,8 +19,8 @@ require 'thor'
 
 #{File.read(f.path)}
     HERE_DOC
-    File.open(f.path, 'w') {|out| out << new_exec}
-    File.chmod(0755, f.path)
+    
+    f.make_executable!
   }
 end
 
