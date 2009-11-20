@@ -38,6 +38,9 @@ class Messed
     @type = type
     @matchers = []
     @session_store = Session::Memcache.new
+    @messages_sent_count = 0
+    @messages_received_count = 0
+    
     match(&block) if block
   end
   
@@ -93,6 +96,7 @@ class Messed
   end
   
   def process(message)
+    increment_messages_received!
     responses = []
     
     self.message = message
@@ -151,8 +155,30 @@ class Messed
   def process_responses(responses)
     if responses && !responses.size.zero?
       logger.debug("Putting #{responses.inspect} onto outgoing queue")
-      responses.each {|response| self.outgoing << response }
+      responses.each {|response| increment_messages_sent!; self.outgoing << response }
     end
   end
+  
+  def status
+    {
+      :messages_received_count => messages_received_count,
+      :messages_sent_count => messages_sent_count,
+      :last_message_received => last_message_received,
+      :last_message_sent => last_message_sent
+    }
+  end
+  
+  def increment_messages_sent!
+    @messages_sent_count += 1
+    @last_message_sent = Time.new
+  end
+  
+  def increment_messages_received!
+    @messages_received_count += 1
+    @last_message_received = Time.new
+  end
+  
+  protected
+  attr_reader :messages_received_count, :messages_sent_count, :last_message_received, :last_message_sent
   
 end
