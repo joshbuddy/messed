@@ -1,35 +1,7 @@
 class Messed
   class Interface
     class Adapter
-      class TwitterSearch < Adapter
-        
-        include Messed::Interface::EMRunner
-        
-        attr_accessor :started_at, :packets_processed, :errors, :last_error, :last_search, :last_status
-        
-        def init
-          @started_at = Time.new
-          @packets_processed = 0
-          @errors = 0
-          @last_error = nil
-          @last_search = nil
-          @last_status = nil
-        end
-
-        def type
-          :twitter
-        end
-        
-        def status
-          {
-            :started_at => started_at,
-            :packets_processed => packets_processed,
-            :errors => errors,
-            :last_error => last_error,
-            :last_search => last_search,
-            :last_status => last_status
-          }
-        end
+      class TwitterSearch < TwitterConsumer
         
         def do_work
           # do work.
@@ -40,7 +12,7 @@ class Messed
             self.last_status = http.response_header.status
             case http.response_header.status
             when 200
-              self.last_search = Time.new
+              self.last_ok = Time.new
               data = JSON.parse(http.response)
               interface.configuration['fetch']['query']['since_id'] = data['max_id']
               data['results'].each do |result|

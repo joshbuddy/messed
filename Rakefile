@@ -22,6 +22,7 @@ begin
     s.add_dependency 'beanstalk-client'
     s.add_dependency 'rspec'
     s.add_dependency 'json'
+    s.add_dependency 'twitter-stream', '>=0.1.3'
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
