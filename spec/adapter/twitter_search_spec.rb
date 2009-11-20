@@ -21,7 +21,7 @@ describe "A Messed application", 'twitter searching' do
       end
     }
 
-    pid = Messed::Interface::Runner.new(@booter.interface_map['search'], :detach => true).start
+    pid = Messed::Interface::Runner.new(@booter.interface_for('search'), :detach => true).start
     sleep(1)
     
     Process.kill('INT', pid)

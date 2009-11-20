@@ -14,6 +14,10 @@ class Messed
         @beanstalk.watch(tube)
       end
       
+      def status
+        @beanstalk.stats_tube(tube)
+      end
+      
       def take(block = true)
         job = beanstalk.reserve
         begin 

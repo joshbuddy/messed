@@ -7,7 +7,7 @@ class RunnerTask < Thor
   desc "interface [NAME]", "starts an interface (#{Messed::Booter.possible_interfaces($root).join(', ')})"
   def interface(name)
     booter = Messed::Booter.new($root, options.environment)
-    interface = booter.interface_map[name]
+    interface = booter.interface_for(name)
     
     raise("unable to find an interface with name the `#{name}'") unless interface
     

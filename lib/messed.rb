@@ -9,16 +9,20 @@ require 'activesupport'
 
 class Messed
   
-  autoload :Message,     File.join(File.dirname(__FILE__), 'messed', 'message')
-  autoload :Queue,       File.join(File.dirname(__FILE__), 'messed', 'queue')
-  autoload :Controller,  File.join(File.dirname(__FILE__), 'messed', 'controller')
-  autoload :Tasks,       File.join(File.dirname(__FILE__), 'messed', 'tasks')
-  autoload :Booter,      File.join(File.dirname(__FILE__), 'messed', 'booter')
-  autoload :Interface,   File.join(File.dirname(__FILE__), 'messed', 'interface')
-  autoload :Utils,       File.join(File.dirname(__FILE__), 'messed', 'utils')
-  autoload :Matcher,     File.join(File.dirname(__FILE__), 'messed', 'matcher')
-  autoload :Logger,      File.join(File.dirname(__FILE__), 'messed', 'logger')
-  autoload :Session,     File.join(File.dirname(__FILE__), 'messed', 'session')
+  autoload :Message,            File.join(File.dirname(__FILE__), 'messed', 'message')
+  autoload :Queue,              File.join(File.dirname(__FILE__), 'messed', 'queue')
+  autoload :Controller,         File.join(File.dirname(__FILE__), 'messed', 'controller')
+  autoload :Tasks,              File.join(File.dirname(__FILE__), 'messed', 'tasks')
+  autoload :Booter,             File.join(File.dirname(__FILE__), 'messed', 'booter')
+  autoload :Interface,          File.join(File.dirname(__FILE__), 'messed', 'interface')
+  autoload :Utils,              File.join(File.dirname(__FILE__), 'messed', 'utils')
+  autoload :Matcher,            File.join(File.dirname(__FILE__), 'messed', 'matcher')
+  autoload :Logger,             File.join(File.dirname(__FILE__), 'messed', 'logger')
+  autoload :Session,            File.join(File.dirname(__FILE__), 'messed', 'session')
+  
+  module Util
+    autoload :RemoteStatus,     File.join(File.dirname(__FILE__), 'messed', 'util', 'remote_status')
+  end
   
   include Logger::LoggingModule
   include Controller::Helper
@@ -27,8 +31,8 @@ class Messed
   
   after_processing :reset!
   
-  attr_accessor :controller
-  attr_reader :outgoing, :incoming, :matchers, :session_store, :type
+  attr_accessor :controller, :configuration
+  attr_reader   :outgoing, :incoming, :matchers, :session_store, :type
   
   def initialize(type = :twitter, &block)
     @type = type

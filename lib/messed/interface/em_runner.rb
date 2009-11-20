@@ -1,11 +1,19 @@
 class Messed
   class Interface
     module EMRunner
-
-      class StatusHandler
-
+      
+      class StatusHandler < EventMachine::Connection
+        
+        @@available_port = 10000
+        
+        def self.next_available_port
+          port = @@available_port
+          @@available_port += 1
+          port
+        end
+        
         attr_accessor :interface
-
+        
         Terminator = "\r\n"
         TerminatorRegex = /\r\n/
         Error = "ERROR\r\n" 
@@ -21,16 +29,20 @@ class Messed
             end
           end
         end
-        
       end
 
       def start(detach)
         logger.info "Starting #{interface.name.to_s}"
         if detach
+          interface.configuration['status'] ||= {}
+          interface.configuration['status']['port'] ||= StatusHandler.next_available_port
+          interface.configuration['status']['address'] ||= '0.0.0.0'
+          
           pid = EM.fork_reactor do
             trap("INT") { quit }
             EM.run do
-              EM.start_server(interface.configuration['status']['address'] || '0.0.0.0', interface.configuration['status']['port'], StatusHandler) do |c|
+              p interface.configuration
+              EM.start_server(interface.configuration['status']['address'], interface.configuration['status']['port'], StatusHandler) do |c|
                 c.interface = interface
               end
               do_work

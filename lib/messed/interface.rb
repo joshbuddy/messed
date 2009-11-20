@@ -17,12 +17,12 @@ class Messed
       "#{Array(configuration['mode']) * ', '} ->> #{name}"
     end
     
-    def status_message
-      <<-HERE_DOC
-Started at #{started_at}
-Adapter: #{adapter.status_message}
-Running for: #{(Time.new - started_at).to_i}s
-      HERE_DOC
+    def status
+      {
+        'adapter' => adapter.status,
+        'configuration' => configuration,
+        'name' => name
+      }
     end
     
     attr_reader :booter, :configuration, :adapter, :name, :started_at

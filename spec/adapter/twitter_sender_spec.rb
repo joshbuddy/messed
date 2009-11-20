@@ -39,7 +39,7 @@ describe "A Messed application", 'twitter sending' do
     @booter.application.process_incoming(false)
     
     Thread.new {
-      Messed::Interface::Runner.new(@booter.interface_map['twitter_sender'], :detach => false).start
+      Messed::Interface::Runner.new(@booter.interface_for('twitter_sender'), :detach => false).start
     }.join(1)
     
     @booter.application.outgoing.jobs_available.should == 0

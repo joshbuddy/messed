@@ -3,13 +3,14 @@ class Messed
     
     include Logger::LoggingModule
     
-    attr_reader :root_directory, :environment, :interface_map, :application
+    attr_reader :root_directory, :environment, :application, :interface_map
     
     def initialize(root_directory, environment = 'development')
       @root_directory, @environment = root_directory, environment
       load_configuration
       load_interfaces
       @application = Messed.new
+      @application.configuration = application_configuration
       @application.incoming = create_incoming_queue
       @application.outgoing = create_outgoing_queue
       @application.instance_eval(File.read(runner_file))
@@ -45,8 +46,16 @@ class Messed
       end
     end
     
+    def interface_for(name)
+      interface_map[name]
+    end
+    
     def interface_configuration(interface_config = nil)
-      self.class.load_interface_configuration(interface_config || File.join(root_directory, 'config/interfaces.yml'))[environment]
+      self.class.load_interface_configuration(interface_config || File.join(root_directory, 'config', 'interfaces.yml'))[environment]
+    end
+
+    def application_configuration
+      YAML.load(File.read(File.join(root_directory, 'config', 'application.yml')))[environment]
     end
 
     def self.load_interface_configuration(interface_config)

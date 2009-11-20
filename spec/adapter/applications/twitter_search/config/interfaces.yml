@@ -8,6 +8,6 @@ development: &default
       host: search.twitter.com
       path: search.json
     interval: 10
-  
+    
 production:
   *default
