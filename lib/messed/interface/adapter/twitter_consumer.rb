@@ -5,7 +5,7 @@ class Messed
         
         include Messed::Interface::EMRunner
         
-        attr_accessor :started_at, :packets_processed, :errors, :last_error, :last_search, :last_status
+        attr_accessor :started_at, :packets_processed, :errors, :last_error, :last_ok, :last_status
         
         def init
           @started_at = Time.new
