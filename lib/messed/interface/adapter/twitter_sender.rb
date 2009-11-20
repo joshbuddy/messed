@@ -39,7 +39,6 @@ class Messed
               job.delete
             }
           end
-          
         end
         
       end

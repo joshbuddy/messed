@@ -36,7 +36,7 @@ describe "A Messed application", 'twitter sending' do
       end
     }
 
-    @booter.application.process_incoming(false)
+    @booter.application.do_work(false)
     
     Thread.new {
       Messed::Interface::Runner.new(@booter.interface_for('twitter_sender'), :detach => false).start

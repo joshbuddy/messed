@@ -19,7 +19,7 @@ describe "A Messed application" do
     
     message = @app.message_class.new('my message')
     @app.incoming << message
-    @app.process_incoming(false)
+    @app.do_work(false)
     @app.outgoing.take{|m| m.body.should == message.body}
   end
   

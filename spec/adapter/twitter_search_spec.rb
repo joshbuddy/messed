@@ -23,13 +23,10 @@ describe "A Messed application", 'twitter searching' do
 
     pid = Messed::Interface::Runner.new(@booter.interface_for('search'), :detach => true).start
     sleep(1)
-    
+
     Process.kill('INT', pid)
-
     @booter.application.incoming.jobs_available.should == 15
-    
-    @booter.application.process_incoming(false)
-
+    @booter.application.do_work(false)
     @booter.application.outgoing.jobs_available.should == 15
     
     

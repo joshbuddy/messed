@@ -81,18 +81,38 @@ class Messed
   end
   alias_method :always, :otherwise
   
-  def process_incoming(continue_forever = true)
-    while continue_forever || incoming.jobs_available?
-      incoming.take { |message|
-        logger.debug "processing message #{message.inspect}"
-        process_responses process(message)
+  def do_work(continue_forever = true)
+    if EM.reactor_running?
+      @connection = EMJack::Connection.new
+      @connection.watch(incoming.tube) do
+        @connection.use(outgoing.tube) do
+          process_incoming(continue_forever)
+        end
+      end
+    else
+      EM.run {
+        do_work(continue_forever)
       }
     end
   end
 
+  def process_incoming(continue_forever)
+    reserve = @connection.reserve(continue_forever ? nil : 0.5) do |job|
+      message = message_class.from_json(job.body)
+      process_responses process(message)
+      job.delete do
+        process_incoming(continue_forever)
+      end
+    end
+    reserve.errback {
+      EM.stop_event_loop
+    }
+  end
+    
+
   def start(detach)
     logger.debug "starting application! detach? #{detach}"
-    process_incoming
+    do_work
   end
   
   def process(message)
@@ -154,8 +174,11 @@ class Messed
 
   def process_responses(responses)
     if responses && !responses.size.zero?
-      logger.debug("Putting #{responses.inspect} onto outgoing queue")
-      responses.each {|response| increment_messages_sent!; self.outgoing << response }
+      logger.debug("Putting response onto outgoing queue")
+      @connection.put(responses.shift.to_json) do
+        increment_messages_sent!
+        process_responses(responses)
+      end
     end
   end
   
