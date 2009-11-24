@@ -9,6 +9,8 @@ class Messed
       autoload :TwitterSearch,    File.join(File.dirname(__FILE__), 'adapter', 'twitter_search')
       autoload :TwitterSender,    File.join(File.dirname(__FILE__), 'adapter', 'twitter_sender')
       autoload :TwitterStreaming, File.join(File.dirname(__FILE__), 'adapter', 'twitter_streaming')
+
+      # abstract class for twitter consumption
       autoload :TwitterConsumer,  File.join(File.dirname(__FILE__), 'adapter', 'twitter_consumer')
       
       Registry = {}

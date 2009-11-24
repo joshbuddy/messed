@@ -1,15 +1,18 @@
+require 'twitter/json_stream'
+
 class Messed
   class Interface
     class Adapter
-      class TwitterStreamer < TwitterConsumer
+      class TwitterStreaming < TwitterConsumer
         
         def do_work
           stream = Twitter::JSONStream.connect(
-            :path    => "/1/statuses/#{interface.configuration['type']}.json?track=football",
+            :path    => "/1/statuses/#{interface.configuration['streaming']['type']}.json?track=%23classicmoviequotes",
             :auth    => "#{interface.configuration['username']}:#{interface.configuration['password']}"
           )
           
           stream.each_item do |item|
+            p "processing #{item}"
             self.last_ok = Time.new
             result = JSON.parse(item)
             message = Message::Twitter.new do |m|
@@ -29,11 +32,13 @@ class Messed
           end
 
           stream.on_error do |message|
+            puts "message #{message.inspect}"
             self.errors += 1
             self.last_error = message
           end
 
           stream.on_max_reconnects do |timeout, retries|
+            puts "message -> #{timeout} #{retries}"
             # Something is wrong on your side. Send yourself an email.
           end
         end
