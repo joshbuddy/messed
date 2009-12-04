@@ -3,11 +3,15 @@ class Messed
     class Adapter
       class TwitterSearch < TwitterConsumer
         
+        def build_query
+          Rack::Utils.build_query(interface.configuration['fetch']['query'])
+        end
+        
         def do_work
           # do work.
-          logger.debug "query for twitter_search #{Rack::Utils.build_query(interface.configuration['fetch']['query'])}"
+          logger.debug "query for twitter_search #{build_query}"
           http = EventMachine::HttpRequest.new("http://#{interface.configuration['fetch']['host']}/#{interface.configuration['fetch']['path']}").
-            get(:query => Rack::Utils.build_query(interface.configuration['fetch']['query']), :timeout => 30)
+            get(:query => build_query, :timeout => 30)
           http.callback {
             self.last_status = http.response_header.status
             case http.response_header.status
@@ -39,6 +43,9 @@ class Messed
           http.errback {
             self.errors += 1
             self.last_error = Time.new
+            EM.add_timer(interface.configuration['interval']) do
+              perform_search
+            end
           }
         end
         
