@@ -3,4 +3,8 @@
 # Run <tt>tokyo_cache_cow -h</tt> to get more usage.
 require File.dirname(__FILE__) + '/../lib/messed'
 
-Messed::Tasks::Generation.start
+if ARGV[0]
+  Messed::Tasks::Generation.new(ARGV[0])
+else
+  $stderr.puts "Please specify a name for your application"
+end
