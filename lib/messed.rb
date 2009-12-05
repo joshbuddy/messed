@@ -3,9 +3,11 @@ require 'logger'
 require 'time'
 require 'eventmachine'
 require 'em-http'
-require 'em-jack'
+require 'em-beanstalk'
 require 'hwia'
 require 'activesupport'
+require 'active_support'
+require 'dressmaker'
 
 class Messed
   
@@ -83,7 +85,7 @@ class Messed
   
   def do_work(continue_forever = true)
     if EM.reactor_running?
-      @connection = EMJack::Connection.new
+      @connection = EM::Beanstalk.new
       @connection.watch(incoming.tube) do
         @connection.use(outgoing.tube) do
           process_incoming(continue_forever)

@@ -1,5 +1,4 @@
 require 'twitter'
-require 'em-jack'
 
 class Messed
   class Interface
@@ -13,7 +12,7 @@ class Messed
         end
         
         def do_work
-          jack = EMJack::Connection.new
+          jack = EM::Beanstalk.new
           jack.watch(interface.application.outgoing.tube) do
             jack.use(interface.application.outgoing.tube) do
               jack.each_job do |job|
