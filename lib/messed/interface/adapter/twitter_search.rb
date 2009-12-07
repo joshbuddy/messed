@@ -20,33 +20,37 @@ class Messed
               data = JSON.parse(http.response)
               interface.configuration['fetch']['query']['since_id'] = data['max_id']
               data['results'].each do |result|
-                message = Message::Twitter.new do |m|
-                  m.body = result['text']
-                  m.from = result['from_user']
-                  m.to = result['to_user_id']
-                  m.created_at = Time.rfc2822(result['created_at'])
-                  m.profile_image_url = result['profile_image_url']
-                  m.id = result['id']
-                  m.geo = result['geo']
-                  m.from_user_id = result['from_user_id']
-                  m.iso_language_code = result['iso_language_code']
-                  m.source = result['source']
-                end
-                self.packets_processed += 1
-                interface.application.incoming << message
+                result_to_message(result)
               end
             end
             EM.add_timer(interface.configuration['interval']) do
-              perform_search
+              do_work
             end
           }
           http.errback {
             self.errors += 1
             self.last_error = Time.new
             EM.add_timer(interface.configuration['interval']) do
-              perform_search
+              do_work
             end
           }
+        end
+        
+        def result_to_message(result)
+          message = Message::Twitter.new do |m|
+            m.body = result['text']
+            m.from = result['from_user']
+            m.to = result['to_user_id']
+            m.created_at = Time.rfc2822(result['created_at'])
+            m.profile_image_url = result['profile_image_url']
+            m.id = result['id']
+            m.geo = result['geo']
+            m.from_user_id = result['from_user_id']
+            m.iso_language_code = result['iso_language_code']
+            m.source = result['source']
+          end
+          self.packets_processed += 1
+          interface.application.incoming << message
         end
         
       end
