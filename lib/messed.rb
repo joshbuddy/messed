@@ -100,10 +100,18 @@ class Messed
 
   def process_incoming(continue_forever)
     reserve = @connection.reserve(continue_forever ? nil : 0.5) do |job|
-      message = message_class.from_json(job.body)
-      process_responses process(message)
-      job.delete do
-        process_incoming(continue_forever)
+      begin
+        message = message_class.from_json(job.body)
+        process_responses process(message)
+        job.delete do
+          process_incoming(continue_forever)
+        end
+      rescue JSON::ParserError
+        # unrecoverable
+        logger.error "message #{job.body} not in JSON format"
+        job.delete do
+          process_incoming(continue_forever)
+        end
       end
     end
     reserve.errback {
