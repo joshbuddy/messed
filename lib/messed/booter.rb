@@ -13,7 +13,7 @@ class Messed
       @application.configuration = application_configuration
       @application.incoming = create_incoming_queue
       @application.outgoing = create_outgoing_queue
-      @application.instance_eval(File.read(runner_file))
+      @application.instance_eval(File.read(runner_file), runner_file)
     end
     
     def self.possible_interfaces(path)
