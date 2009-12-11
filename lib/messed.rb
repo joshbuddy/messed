@@ -9,21 +9,23 @@ require 'activesupport'
 require 'active_support'
 require 'dressmaker'
 
+$LOAD_PATH << File.dirname(__FILE__)
+
 class Messed
   
-  autoload :Message,            File.join(File.dirname(__FILE__), 'messed', 'message')
-  autoload :Queue,              File.join(File.dirname(__FILE__), 'messed', 'queue')
-  autoload :Controller,         File.join(File.dirname(__FILE__), 'messed', 'controller')
-  autoload :Tasks,              File.join(File.dirname(__FILE__), 'messed', 'tasks')
-  autoload :Booter,             File.join(File.dirname(__FILE__), 'messed', 'booter')
-  autoload :Interface,          File.join(File.dirname(__FILE__), 'messed', 'interface')
-  autoload :Utils,              File.join(File.dirname(__FILE__), 'messed', 'utils')
-  autoload :Matcher,            File.join(File.dirname(__FILE__), 'messed', 'matcher')
-  autoload :Logger,             File.join(File.dirname(__FILE__), 'messed', 'logger')
-  autoload :Session,            File.join(File.dirname(__FILE__), 'messed', 'session')
+  autoload :Message,            File.join('messed', 'message')
+  autoload :Queue,              File.join('messed', 'queue')
+  autoload :Controller,         File.join('messed', 'controller')
+  autoload :Tasks,              File.join('messed', 'tasks')
+  autoload :Booter,             File.join('messed', 'booter')
+  autoload :Interface,          File.join('messed', 'interface')
+  autoload :Utils,              File.join('messed', 'utils')
+  autoload :Matcher,            File.join('messed', 'matcher')
+  autoload :Logger,             File.join('messed', 'logger')
+  autoload :Session,            File.join('messed', 'session')
   
   module Util
-    autoload :RemoteStatus,     File.join(File.dirname(__FILE__), 'messed', 'util', 'remote_status')
+    autoload :RemoteStatus,     File.join('messed', 'util', 'remote_status')
   end
   
   include Logger::LoggingModule
@@ -33,7 +35,7 @@ class Messed
   
   after_processing :reset!
   
-  attr_accessor :controller, :configuration
+  attr_accessor :controller, :configuration, :current_matcher
   attr_reader   :outgoing, :incoming, :matchers, :session_store, :type
   
   def initialize(type = :twitter, &block)
@@ -135,9 +137,8 @@ class Messed
       self.session = session
       
       matchers.find do |matcher|
-        logger.debug "testing matching #{matcher.inspect}"
         if matcher.match?(message)
-          logger.debug "matched! #{matcher.inspect}"
+          self.current_matcher = matcher
           controller = process_destination(matcher.destination)
           responses.concat(controller.responses)
           matcher.stop_processing?
