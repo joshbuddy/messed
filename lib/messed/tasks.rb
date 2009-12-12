@@ -1,7 +1,7 @@
 class Messed
   module Tasks
-    autoload :Generation, File.join(File.dirname(__FILE__), 'tasks', 'generation')
-    autoload :Running,    File.join(File.dirname(__FILE__), 'tasks', 'running')
-    autoload :Web,        File.join(File.dirname(__FILE__), 'tasks', 'web')
+    autoload :Generation, File.join('messed', 'tasks', 'generation')
+    autoload :Running,    File.join('messed', 'tasks', 'running')
+    autoload :Web,        File.join('messed', 'tasks', 'web')
   end
 end

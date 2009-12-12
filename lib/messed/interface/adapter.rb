@@ -6,9 +6,9 @@ class Messed
       
       include Logger::LoggingModule
       
-      autoload :TwitterSearch,    File.join(File.dirname(__FILE__), 'adapter', 'twitter_search')
-      autoload :TwitterSender,    File.join(File.dirname(__FILE__), 'adapter', 'twitter_sender')
-      autoload :TwitterStreaming, File.join(File.dirname(__FILE__), 'adapter', 'twitter_streaming')
+      autoload :TwitterSearch,    File.join('messed', 'interface', 'adapter', 'twitter_search')
+      autoload :TwitterSender,    File.join('messed', 'interface', 'adapter', 'twitter_sender')
+      autoload :TwitterStreaming, File.join('messed', 'interface', 'adapter', 'twitter_streaming')
 
       # abstract class for twitter consumption
       autoload :TwitterConsumer,  File.join(File.dirname(__FILE__), 'adapter', 'twitter_consumer')

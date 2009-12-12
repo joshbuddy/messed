@@ -4,15 +4,14 @@ class Messed
   class Interface
     class Adapter
       class TwitterSearch < TwitterConsumer
-        
+
         def build_query
           Rack::Utils.build_query(interface.configuration['fetch']['query'])
         end
-        
+
         def do_work
-          
           @ids ||= []
-          
+
           # do work.
           begin
             query = build_query
@@ -22,15 +21,15 @@ class Messed
             http.callback {
               self.last_status = http.response_header.status
               case http.response_header.status
-              when 200
-                self.last_ok = Time.new
-                data = JSON.parse(http.response)
-                interface.configuration['fetch']['query']['since_id'] = data['max_id'] if interface.configuration['fetch']['query']
-                @test_set = Set.new(@ids)
-                data['results'].each do |result|
-                  result_to_message(result)
-                end
-                trim_ids
+                when 200
+                  self.last_ok = Time.new
+                  data = JSON.parse(http.response)
+                  interface.configuration['fetch']['query']['since_id'] = data['max_id'] if interface.configuration['fetch']['query']
+                  @test_set = Set.new(@ids)
+                  data['results'].each do |result|
+                    result_to_message(result)
+                  end
+                  trim_ids
               end
               EM.add_timer(interface.configuration['interval']) do
                 do_work
@@ -49,13 +48,13 @@ class Messed
             end
           end
         end
-        
+
         def trim_ids
           while @ids.size > 500
             @ids.shift
           end
         end
-        
+
         def result_to_message(result)
           unless @test_set.include?(result['id'])
             message = Message::Twitter.new do |m|
@@ -76,7 +75,7 @@ class Messed
             logger.debug "putting on #{message.id}"
           end
         end
-        
+
       end
     end
   end

@@ -3,7 +3,7 @@ require 'beanstalk-client'
 class Messed
   class Queue
     
-    autoload :Beanstalk, File.join(File.dirname(__FILE__), 'queue', 'beanstalk')
+    autoload :Beanstalk, File.join('messed', 'queue', 'beanstalk')
     
     def <<(message)
       raise

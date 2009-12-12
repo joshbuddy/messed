@@ -1,8 +1,8 @@
 class Messed
   class Interface
-    autoload :Runner,      File.join(File.dirname(__FILE__), 'interface', 'runner')
-    autoload :EMRunner,    File.join(File.dirname(__FILE__), 'interface', 'em_runner')
-    autoload :Adapter,     File.join(File.dirname(__FILE__), 'interface', 'adapter')
+    autoload :Runner,      File.join('messed', 'interface', 'runner')
+    autoload :EMRunner,    File.join('messed', 'interface', 'em_runner')
+    autoload :Adapter,     File.join('messed', 'interface', 'adapter')
     
     def self.interface_from_configuration(booter, name, configuration)
       interface = Interface.new

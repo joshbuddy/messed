@@ -2,7 +2,7 @@ class Messed
 
   class Message
 
-    autoload :Twitter,     File.join(File.dirname(__FILE__), 'message', 'twitter')
+    autoload :Twitter,     File.join('messed', 'message', 'twitter')
 
     include Hashify
     include Hashify::Json
