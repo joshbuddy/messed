@@ -101,7 +101,7 @@ class Messed
   end
 
   def process_incoming(continue_forever)
-    reserve = @connection.reserve(continue_forever ? nil : 0.5) do |job|
+    @connection.reserve(continue_forever ? nil : 0.5) { |job|
       begin
         message = message_class.from_json(job.body)
         process_responses process(message)
@@ -115,8 +115,7 @@ class Messed
           process_incoming(continue_forever)
         end
       end
-    end
-    reserve.errback {
+    }.on_error { |message|
       EM.stop_event_loop
     }
   end

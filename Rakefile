@@ -14,7 +14,7 @@ begin
     s.files = FileList["[A-Z]*", "{lib,spec,bin,application_spec,patterns}/**/*"]
     s.add_dependency 'eventmachine'
     s.add_dependency 'em-http-request'
-    s.add_dependency 'em-beanstalk', '>=0.0.4'
+    s.add_dependency 'em-beanstalk', '>=0.0.6'
     s.add_dependency 'hashify', '>=0.0.2'
     s.add_dependency 'methodmissing-hwia', '>=1.0.2'
     s.add_dependency 'activesupport'
