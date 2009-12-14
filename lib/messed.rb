@@ -32,11 +32,13 @@ class Messed
   include Controller::Helper
   include Controller::Processing
   include Controller::Respond
+
+  include Messed::Interface::EMRunner
   
   after_processing :reset!
   
   attr_accessor :controller, :configuration, :current_matcher
-  attr_reader   :outgoing, :incoming, :matchers, :session_store, :type
+  attr_reader   :outgoing, :incoming, :matchers, :session_store, :type, :interface, :name
   
   def initialize(type = :twitter, &block)
     @type = type
@@ -45,6 +47,8 @@ class Messed
     @messages_sent_count = 0
     @messages_received_count = 0
     
+    @interface = self
+    @name = 'Application'
     match(&block) if block
   end
   
@@ -120,12 +124,6 @@ class Messed
     }
   end
     
-
-  def start(detach)
-    logger.debug "starting application! detach? #{detach}"
-    do_work
-  end
-  
   def process(message)
     increment_messages_received!
     responses = []
