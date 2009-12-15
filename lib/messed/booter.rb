@@ -7,7 +7,7 @@ class Messed
     
     def initialize(root_directory, options = {}, &block)
       if block
-        EMRunner.new(:detach => options[:detach]) {
+        EMRunner.new(:detach => options[:detach], :pid_file => options[:pid_file]) {
           setup_booter(root_directory, options)
           yield self
         }
