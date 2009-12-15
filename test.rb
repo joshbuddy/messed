@@ -30,4 +30,4 @@ m.incoming = Messed::Queue::Beanstalk.new('incoming')
 m.incoming << Messed::Message.new("hey you jerks")
 m.incoming << Messed::Message.new("hey you")
 
-m.do_work
+m.start

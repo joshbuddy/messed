@@ -27,8 +27,6 @@ class MessedSpecHolder
   
 end
 
-
-
 module MessedSpecHelper
 
   Holder = MessedSpecHolder.new

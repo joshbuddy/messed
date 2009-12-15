@@ -24,10 +24,10 @@ describe "A Messed application", 'sessions' do
     message.from = 'josh'
     message.from_user_id = 1234
     @app.incoming << message
-    @app.do_work(false)
+    @app.start(false)
     @app.outgoing.take{|m| m.body.should == "i got 1 messages"}
     @app.incoming << message
-    @app.do_work(false)
+    @app.start(false)
     @app.outgoing.take{|m| m.body.should == "i got 2 messages"}
   end
   

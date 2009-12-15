@@ -27,28 +27,24 @@ class Messed
 
     end
     
+    attr_accessor :logger
+    
     def initialize
-      
+      setup_logger
     end
     private :initialize
-    
-    @@instance = self.new
     
     def self.instance
       @@instance
     end
     
-    def setup
-      @logger ||= ::Logger.new(STDOUT)
+    def setup_logger(stream = STDOUT, log_level = :debug)
+      @logger = ::Logger.new(STDOUT)
+      @logger.level = ::Logger.const_get(log_level.to_s.upcase.to_sym)
     end
+    
+    @@instance = self.new
 
-    def logger
-      setup
-      @logger
-    end
-    
-    attr_writer :logger
-    
   end
 end
     

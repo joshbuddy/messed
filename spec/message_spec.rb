@@ -19,7 +19,7 @@ describe "A Messed application", 'messaging' do
     
     message = @app.message_class.new('my message')
     @app.incoming << message
-    @app.do_work(false)
+    @app.start(false)
     @app.outgoing.take{|m| m.body.should == message.body}
   end
   
@@ -32,7 +32,7 @@ describe "A Messed application", 'messaging' do
     
     message = @app.message_class.new('my message')
     @app.incoming << message
-    @app.do_work(false)
+    @app.start(false)
     @app.outgoing.take{|m| m.body.should == 'thats a nice message!'; m.in_reply_to.body.should == message.body}
   end
   
@@ -45,7 +45,7 @@ describe "A Messed application", 'messaging' do
     
     message = @app.message_class.new('my message')
     @app.incoming << message
-    @app.do_work(false)
+    @app.start(false)
     @app.outgoing.take{|m| m.body.should == 'thats a nice message!'; m.in_reply_to.body.should == message.body; m.should be_private}
   end
   

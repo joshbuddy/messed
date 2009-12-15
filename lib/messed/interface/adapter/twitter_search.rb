@@ -5,13 +5,14 @@ class Messed
     class Adapter
       class TwitterSearch < TwitterConsumer
 
+        attr_reader :packets_processed
+
         def build_query
           Rack::Utils.build_query(interface.configuration['fetch']['query'])
         end
-
-        def do_work
+        
+        def start
           @ids ||= []
-
           # do work.
           begin
             query = build_query
@@ -32,19 +33,19 @@ class Messed
                   trim_ids
               end
               EM.add_timer(interface.configuration['interval']) do
-                do_work
+                start
               end
             }
             http.errback {
               self.errors += 1
               self.last_error = Time.new
               EM.add_timer(interface.configuration['interval']) do
-                do_work
+                start
               end
             }
           rescue RuntimeError
             EM.add_timer(interface.configuration['interval']) do
-              do_work
+              start
             end
           end
         end
@@ -70,9 +71,9 @@ class Messed
               m.source = result['source']
             end
             @ids << message.id
-            self.packets_processed += 1
+            @packets_processed += 1
             interface.application.incoming << message
-            logger.debug "putting on #{message.id}"
+            logger.debug "putting on #{message.id}: #{message.body}"
           end
         end
 

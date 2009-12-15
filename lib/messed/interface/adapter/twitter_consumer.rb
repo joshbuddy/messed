@@ -3,8 +3,6 @@ class Messed
     class Adapter
       class TwitterConsumer < Adapter
         
-        include Messed::Interface::EMRunner
-        
         attr_accessor :started_at, :packets_processed, :errors, :last_error, :last_ok, :last_status
         
         def init

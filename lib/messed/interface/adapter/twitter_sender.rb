@@ -5,13 +5,11 @@ class Messed
     class Adapter
       class TwitterSender < Adapter
         
-        include Messed::Interface::EMRunner
-        
         def message_class
           Messed::Message::Twitter
         end
         
-        def do_work
+        def start
           jack = EM::Beanstalk.new
           jack.watch(interface.application.outgoing.tube) do
             jack.use(interface.application.outgoing.tube) do

@@ -5,8 +5,30 @@ class Messed
     
     attr_reader :root_directory, :environment, :application, :interface_map
     
-    def initialize(root_directory, environment = 'development')
-      @root_directory, @environment = root_directory, environment
+    def initialize(root_directory, options = {}, &block)
+      if block
+        EMRunner.new(:detach => options[:detach]) {
+          setup_booter(root_directory, options)
+          yield self
+        }
+      else
+        setup_booter(root_directory, options)
+      end
+    end
+    
+    def setup_booter(root_directory, options)
+      @root_directory = root_directory
+      @environment = options[:environment] || 'development'
+      log_level    = options[:log_level] || :debug
+      log          = options[:log] || STDOUT
+      
+      case @log
+      when String
+        Messed::Logger.instance.setup_logger(File.open(log, File::WRONLY | File::APPEND | File::CREAT), log_level)
+      else
+        Messed::Logger.instance.setup_logger(log, log_level)
+      end
+
       load_configuration
       load_interfaces
       @application = Messed.new

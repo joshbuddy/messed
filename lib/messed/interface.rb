@@ -1,7 +1,6 @@
 class Messed
   class Interface
     autoload :Runner,      File.join('messed', 'interface', 'runner')
-    autoload :EMRunner,    File.join('messed', 'interface', 'em_runner')
     autoload :Adapter,     File.join('messed', 'interface', 'adapter')
     
     def self.interface_from_configuration(booter, name, configuration)
@@ -35,8 +34,8 @@ class Messed
       booter.application
     end
     
-    def start(detach)
-      adapter.start(detach)
+    def start
+      adapter.start
     end
     
     protected

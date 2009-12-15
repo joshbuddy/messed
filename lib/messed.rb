@@ -23,6 +23,7 @@ class Messed
   autoload :Matcher,            File.join('messed', 'matcher')
   autoload :Logger,             File.join('messed', 'logger')
   autoload :Session,            File.join('messed', 'session')
+  autoload :EMRunner,           File.join('messed', 'em_runner')
   
   module Util
     autoload :RemoteStatus,     File.join('messed', 'util', 'remote_status')
@@ -33,12 +34,11 @@ class Messed
   include Controller::Processing
   include Controller::Respond
 
-  include Messed::Interface::EMRunner
-  
   after_processing :reset!
   
   attr_accessor :controller, :configuration, :current_matcher
-  attr_reader   :outgoing, :incoming, :matchers, :session_store, :type, :interface, :name
+  attr_reader   :outgoing, :incoming, :matchers, :session_store, :type, :interface, :name,
+                :messages_received_count, :messages_sent_count, :last_message_received, :last_message_sent
   
   def initialize(type = :twitter, &block)
     @type = type
@@ -89,7 +89,7 @@ class Messed
   end
   alias_method :always, :otherwise
   
-  def do_work(continue_forever = true)
+  def start(continue_forever = true)
     if EM.reactor_running?
       @connection = EM::Beanstalk.new
       @connection.watch(incoming.tube) do
@@ -99,7 +99,7 @@ class Messed
       end
     else
       EM.run {
-        do_work(continue_forever)
+        start(continue_forever)
       }
     end
   end
@@ -182,7 +182,7 @@ class Messed
 
   def process_responses(responses)
     if responses && !responses.size.zero?
-      logger.debug("Putting response onto outgoing queue")
+      logger.debug("Putting response #{responses.first.body} onto outgoing queue")
       @connection.put(responses.shift.to_json) do
         increment_messages_sent!
         process_responses(responses)
@@ -208,8 +208,5 @@ class Messed
     @messages_received_count += 1
     @last_message_received = Time.new
   end
-  
-  protected
-  attr_reader :messages_received_count, :messages_sent_count, :last_message_received, :last_message_sent
   
 end
