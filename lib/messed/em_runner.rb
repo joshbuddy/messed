@@ -35,14 +35,12 @@ class Messed
     def initialize(options, &block)
       logger.info "Starting... #{options.inspect}"
       if options[:detach]
-        options[:status] ||= {}
-        options[:status][:address] = '0.0.0.0'
-        options[:status][:port]    = StatusHandler.next_available_port
+        options[:status_address] ||= '0.0.0.0'
         
         pid = EM.fork_reactor do
           trap("INT") { EM.stop_reactor_loop }
           EM.run do
-            EM.start_server(options[:status][:address], options[:status][:port], StatusHandler) do |c|
+            EM.start_server(options[:status_address], options[:status_port], StatusHandler) do |c|
               c.interface = interface
             end
             EM.next_tick(&block)
@@ -53,10 +51,8 @@ class Messed
         exit(0)
       else
         EM.run do
-          options[:status] ||= {}
-          options[:status][:address] = '0.0.0.0'
-          options[:status][:port]    = StatusHandler.next_available_port
-          EM.start_server(options[:status][:address], options[:status][:port], StatusHandler) do |c|
+          options[:status_address] ||= '0.0.0.0'
+          EM.start_server(options[:status_address], options[:status_port], StatusHandler) do |c|
             c.interface = interface
           end
           EM.next_tick(&block)
