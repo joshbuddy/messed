@@ -9,7 +9,6 @@ class Messed
       def initialize(runnable, options)
         @runnable = runnable
         @options = options
-        @detach = options.key?(:detach) ? options[:detach] : false
       end
       
       def start

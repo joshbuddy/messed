@@ -1,4 +1,5 @@
 require 'set'
+require 'rack'
 
 class Messed
   class Interface

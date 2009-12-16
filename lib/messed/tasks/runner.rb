@@ -10,7 +10,7 @@ class Messed
         Messed::Booter.new($root, :detach => options.detach?, :pid_file => options.pid, :environment => options.environment) do |booter|
           interface = booter.interface_for(name)
           raise("unable to find an interface with name the `#{name}'") unless interface
-          Messed::Interface::Runner.new(interface).start
+          interface.start
         end
       end
   
