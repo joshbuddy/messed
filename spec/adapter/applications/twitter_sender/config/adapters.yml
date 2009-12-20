@@ -1,9 +1,0 @@
-development: &default
-  twitter_sender:
-    mode: outgoing
-    adapter: twitter_sender
-    username: josh
-    password: josh
-  
-production:
-  *default

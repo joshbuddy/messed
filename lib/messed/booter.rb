@@ -1,14 +1,15 @@
+require 'fileutils'
+
 class Messed
   class Booter
     
     include Logger::LoggingModule
     
-    attr_reader :root_directory, :environment, :application, :interface_map
+    attr_reader :root_directory, :environment, :application, :interface_map, :configuration
     
     def initialize(root_directory, options = {}, &block)
       if block
-        options[:status_port] ||= ((Process.pid % 1000) + 12000)
-        EMRunner.new(:detach => options[:detach], :pid_file => options[:pid_file], :status_port => options[:status_port]) {
+        EMRunner.new(:detach => options[:detach], :pid_file => options[:pid_file]) {
           setup_booter(root_directory, options)
           yield self
         }
@@ -18,25 +19,42 @@ class Messed
     end
     
     def setup_booter(root_directory, options)
+      
       @root_directory = root_directory
       @environment = options[:environment] || 'development'
-      log_level    = options[:log_level] || :debug
-      log          = options[:log] || STDOUT
-      
-      case @log
-      when String
-        Messed::Logger.instance.setup_logger(File.open(log, File::WRONLY | File::APPEND | File::CREAT), log_level)
-      else
-        Messed::Logger.instance.setup_logger(log, log_level)
-      end
 
       load_configuration
-      load_interfaces
+      prepare_root
+      setup_logger
+      setup_queues
+      setup_interfaces
+      setup_application
+    end
+
+    def prepare_root
+      FileUtils.mkdir_p(File.join(root_directory, 'log'))
+      FileUtils.mkdir_p(File.join(root_directory, 'tmp'))
+    end
+
+    def load_configuration
+      @configuration = Configuration.load_from_directory(@environment, File.expand_path(File.join(root_directory, 'config')))
+    end
+
+    def setup_queues
+      @incoming_queue = create_incoming_queue
+      @outgoing_queue = create_outgoing_queue
+    end
+    
+    def setup_application
       @application = Messed.new
-      @application.configuration = application_configuration
+      @application.configuration = configuration.application
       @application.incoming = create_incoming_queue
       @application.outgoing = create_outgoing_queue
       @application.instance_eval(File.read(runner_file), runner_file)
+    end
+
+    def setup_logger
+      Messed::Logger.instance.setup_logger(configuration.logger || ::Logger.new(File.open(File.join(root_directory, 'log', "#{environment}.log"), File::WRONLY | File::APPEND | File::CREAT)), configuration.log_level || :debug)
     end
     
     def self.possible_interfaces(path)
@@ -56,16 +74,11 @@ class Messed
       File.join(root_directory, "config/environments/#{environment}.rb")
     end
     
-    def load_configuration
-      instance_eval File.read(configuration_file)
-      instance_eval File.read(environmental_configuration_file) if File.exist?(environmental_configuration_file)
-    end
-    
-    def load_interfaces
+    def setup_interfaces
       @interface_map = {}
-      interface_configuration.each do |name, conf|
+      configuration.interfaces.each do |name, conf|
         logger.info "Loading interface `#{name}'"
-        @interface_map[name] = Interface.interface_from_configuration(self, name, conf)
+        @interface_map[name] = Interface.interface_from_configuration(self, name, conf.adapter, conf.options)
       end
     end
     
@@ -73,24 +86,12 @@ class Messed
       interface_map[name]
     end
     
-    def interface_configuration(interface_config = nil)
-      self.class.load_interface_configuration(interface_config || File.join(root_directory, 'config', 'interfaces.yml'))[environment]
-    end
-
-    def application_configuration
-      YAML.load(File.read(File.join(root_directory, 'config', 'application.yml')))[environment]
-    end
-
-    def self.load_interface_configuration(interface_config)
-      YAML.load(File.read(interface_config))
-    end
-    
     def create_incoming_queue
-      Messed::Queue::Beanstalk.new('incoming-messages')
+      Messed::Queue::Beanstalk.new(configuration.queues.incoming.tube, configuration.queues.incoming.host, configuration.queues.incoming.port)
     end
     
     def create_outgoing_queue
-      Messed::Queue::Beanstalk.new('outgoing-messages')
+      Messed::Queue::Beanstalk.new(configuration.queues.outgoing.tube, configuration.queues.outgoing.host, configuration.queues.outgoing.port)
     end
     
   end

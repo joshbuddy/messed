@@ -38,7 +38,7 @@ describe "A Messed application", 'twitter sending' do
 
       booter.application.start
       EM.add_timer(1) do
-        booter.interface_for('twitter_sender').start
+        booter.interface_for(:twitter_sender).start
         EM.add_timer(1) do
           booter.application.outgoing.jobs_available.should == 0
           EventMachine::HttpRequest.count("http://twitter.com:80/direct_messages/new.json", "POST").should == 1

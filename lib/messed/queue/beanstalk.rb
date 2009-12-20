@@ -7,9 +7,9 @@ class Messed
       attr_accessor :application
       attr_reader   :tube
       
-      def initialize(tube, connection = '127.0.0.1:11300')
-        @beanstalk = ::Beanstalk::Pool.new(Array(connection))
-        @tube = tube
+      def initialize(tube, host = '127.0.0.1', port = 11300)
+        @tube, @host, @port = tube, host, port
+        @beanstalk = ::Beanstalk::Pool.new(Array("#{host}:#{port}"))
         @beanstalk.use(tube)
         @beanstalk.watch(tube)
       end

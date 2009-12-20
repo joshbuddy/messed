@@ -1,8 +1,0 @@
-development: &default
-  default:
-    adapter: twitter
-    username: joshbuddy
-    password: testing
-  
-production:
-  *default

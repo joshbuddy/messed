@@ -13,17 +13,18 @@ $LOAD_PATH << File.dirname(__FILE__)
 
 class Messed
   
+  autoload :Booter,             File.join('messed', 'booter')
+  autoload :Configuration,      File.join('messed', 'configuration')
+  autoload :Controller,         File.join('messed', 'controller')
+  autoload :EMRunner,           File.join('messed', 'em_runner')
+  autoload :Interface,          File.join('messed', 'interface')
+  autoload :Logger,             File.join('messed', 'logger')
+  autoload :Matcher,            File.join('messed', 'matcher')
   autoload :Message,            File.join('messed', 'message')
   autoload :Queue,              File.join('messed', 'queue')
-  autoload :Controller,         File.join('messed', 'controller')
-  autoload :Tasks,              File.join('messed', 'tasks')
-  autoload :Booter,             File.join('messed', 'booter')
-  autoload :Interface,          File.join('messed', 'interface')
-  autoload :Utils,              File.join('messed', 'utils')
-  autoload :Matcher,            File.join('messed', 'matcher')
-  autoload :Logger,             File.join('messed', 'logger')
   autoload :Session,            File.join('messed', 'session')
-  autoload :EMRunner,           File.join('messed', 'em_runner')
+  autoload :Tasks,              File.join('messed', 'tasks')
+  autoload :Utils,              File.join('messed', 'utils')
   
   module Util
     autoload :RemoteStatus,     File.join('messed', 'util', 'remote_status')
@@ -91,6 +92,13 @@ class Messed
   
   def start(continue_forever = true)
     if EM.reactor_running?
+
+      if configuration
+        EM.start_server(configuration.status_address || '0.0.0.0', configuration.status_port || 19191, EMRunner::StatusHandler) do |c|
+          c.interface = self
+        end
+      end
+      
       @connection = EM::Beanstalk.new
       @connection.watch(incoming.tube) do
         @connection.use(outgoing.tube) do

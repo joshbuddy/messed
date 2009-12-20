@@ -20,7 +20,7 @@ describe "A Messed application", 'twitter searching' do
         end
       }
       
-      booter.interface_for('search').start
+      booter.interface_for(:search).start
       EM.add_timer(1) do
         booter.application.incoming.jobs_available.should == 15
         booter.application.start

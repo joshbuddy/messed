@@ -9,7 +9,7 @@ class Messed
         attr_reader :packets_processed
 
         def build_query
-          Rack::Utils.build_query(interface.configuration['fetch']['query'])
+          Rack::Utils.build_query(interface.configuration[:fetch][:query])
         end
         
         def start
@@ -18,7 +18,7 @@ class Messed
           begin
             query = build_query
             logger.debug "query for twitter_search #{query}"
-            http = EventMachine::HttpRequest.new("http://#{interface.configuration['fetch']['host']}/#{interface.configuration['fetch']['path']}").
+            http = EventMachine::HttpRequest.new("http://#{interface.configuration[:fetch][:host]}/#{interface.configuration[:fetch][:path]}").
               get(:query => query, :timeout => 30)
             http.callback {
               self.last_status = http.response_header.status
@@ -26,26 +26,26 @@ class Messed
                 when 200
                   self.last_ok = Time.new
                   data = JSON.parse(http.response)
-                  interface.configuration['fetch']['query']['since_id'] = data['max_id'] if interface.configuration['fetch']['query']
+                  interface.configuration[:fetch][:query][:since_id] = data['max_id'] if interface.configuration[:fetch][:query]
                   @test_set = Set.new(@ids)
                   data['results'].each do |result|
                     result_to_message(result)
                   end
                   trim_ids
               end
-              EM.add_timer(interface.configuration['interval']) do
+              EM.add_timer(interface.configuration[:interval]) do
                 start
               end
             }
             http.errback {
               self.errors += 1
               self.last_error = Time.new
-              EM.add_timer(interface.configuration['interval']) do
+              EM.add_timer(interface.configuration[:interval]) do
                 start
               end
             }
           rescue RuntimeError
-            EM.add_timer(interface.configuration['interval']) do
+            EM.add_timer(interface.configuration[:interval]) do
               start
             end
           end

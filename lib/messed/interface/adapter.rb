@@ -18,9 +18,9 @@ class Messed
         Registry[name] = class_name
       end
       
-      register_for_name 'twitter_search',    'Messed::Interface::Adapter::TwitterSearch'
-      register_for_name 'twitter_sender',    'Messed::Interface::Adapter::TwitterSender'
-      register_for_name 'twitter_streaming', 'Messed::Interface::Adapter::TwitterStreaming'
+      register_for_name :twitter_search,    'Messed::Interface::Adapter::TwitterSearch'
+      register_for_name :twitter_sender,    'Messed::Interface::Adapter::TwitterSender'
+      register_for_name :twitter_streaming, 'Messed::Interface::Adapter::TwitterStreaming'
       
       def self.for_name(name)
         class_name = Registry[name]

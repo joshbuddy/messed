@@ -38,9 +38,9 @@ class Messed
       @@instance
     end
     
-    def setup_logger(stream = STDOUT, log_level = :debug)
-      @logger = ::Logger.new(STDOUT)
-      @logger.level = ::Logger.const_get(log_level.to_s.upcase.to_sym)
+    def setup_logger(logger = ::Logger.new(STDOUT), log_level = :debug)
+      @logger = logger
+      @logger.level = ::Logger.const_get(log_level.to_s.upcase.to_sym) if log_level
     end
     
     @@instance = self.new
