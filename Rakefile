@@ -16,7 +16,7 @@ begin
     s.add_dependency 'em-http-request'
     s.add_dependency 'em-beanstalk', '>=0.0.6'
     s.add_dependency 'hashify', '>=0.0.2'
-    s.add_dependency 'methodmissing-hwia', '>=1.0.2'
+    s.add_dependency 'hwia', '>=1.0.2'
     s.add_dependency 'activesupport'
     s.add_dependency 'dressmaker', '>=0.0.3'
     s.add_dependency 'beanstalk-client'
