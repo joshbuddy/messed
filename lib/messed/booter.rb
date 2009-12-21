@@ -11,7 +11,7 @@ class Messed
       if block
         EMRunner.new(:detach => options[:detach]) {
           setup_booter(root_directory, options)
-          record_pid($pid) if $pid
+          record_pid(Process.pid)
           yield self
         }
       else
