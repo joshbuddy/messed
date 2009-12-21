@@ -5,14 +5,10 @@ directory.matches('/bin') do |dir|
 #!/usr/bin/env ruby
 
 require 'rubygems'
-begin
+if ENV['MESSED_HOME']
+  require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+else  
   require 'messed'
-rescue LoadError
-  if ENV['MESSED_HOME']
-    require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
-  else  
-    raise("no messed!")
-  end
 end
 
 require 'thor'
