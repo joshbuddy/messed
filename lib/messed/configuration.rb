@@ -34,6 +34,10 @@ class Messed
         @interfaces.each(&block)
       end
       
+      def names
+        @interfaces.keys
+      end
+      
       def method_missing(method, *args, &block)
         @interfaces[method] ||= IndividualInterface.new
       end

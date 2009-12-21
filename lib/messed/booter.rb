@@ -66,12 +66,8 @@ class Messed
     end
     
     def self.possible_interfaces(path)
-      conf = load_interface_configuration(File.join(path, 'config/interfaces.yml'))
-      conf[conf.keys.first].keys
-    end
-    
-    def configuration_file
-      File.join(root_directory, 'config/application.rb')
+      booter = new(path)
+      booter.configuration.interfaces.names
     end
     
     def runner_file
