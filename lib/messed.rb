@@ -5,7 +5,6 @@ require 'eventmachine'
 require 'em-http'
 require 'em-beanstalk'
 require 'hwia'
-require 'activesupport'
 require 'active_support'
 require 'dressmaker'
 
