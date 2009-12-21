@@ -37,7 +37,7 @@ class Messed
 
   after_processing :reset!
   
-  attr_accessor :controller, :configuration, :current_matcher
+  attr_accessor :controller, :booter, :current_matcher
   attr_reader   :outgoing, :incoming, :matchers, :session_store, :type, :interface, :name,
                 :messages_received_count, :messages_sent_count, :last_message_received, :last_message_sent
   
@@ -93,10 +93,11 @@ class Messed
   def start(continue_forever = true)
     if EM.reactor_running?
 
-      if configuration
-        EM.start_server(configuration.status_address || '0.0.0.0', configuration.status_port || 19191, EMRunner::StatusHandler) do |c|
+      if booter
+        EM.start_server(booter.configuration.application.status_address || '0.0.0.0', booter.configuration.application.status_port || 19191, EMRunner::StatusHandler) do |c|
           c.interface = self
         end
+        booter.write_pid_file(booter.configuration.application.pid_file)
       end
       
       @connection = EM::Beanstalk.new

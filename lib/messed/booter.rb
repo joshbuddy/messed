@@ -5,12 +5,13 @@ class Messed
     
     include Logger::LoggingModule
     
-    attr_reader :root_directory, :environment, :application, :interface_map, :configuration
+    attr_reader :root_directory, :environment, :application, :interface_map, :configuration, :pid
     
     def initialize(root_directory, options = {}, &block)
       if block
-        EMRunner.new(:detach => options[:detach], :pid_file => options[:pid_file]) {
+        EMRunner.new(:detach => options[:detach]) {
           setup_booter(root_directory, options)
+          record_pid($pid) if $pid
           yield self
         }
       else
@@ -19,7 +20,6 @@ class Messed
     end
     
     def setup_booter(root_directory, options)
-      
       @root_directory = root_directory
       @environment = options[:environment] || 'development'
 
@@ -31,9 +31,17 @@ class Messed
       setup_application
     end
 
+    def record_pid(pid)
+      @pid = pid
+    end
+
+    def write_pid_file(pid_file)
+      File.open(File.expand_path(pid_file, root_directory), 'w') {|f| f << pid} if pid_file
+    end
+
     def prepare_root
       FileUtils.mkdir_p(File.join(root_directory, 'log'))
-      FileUtils.mkdir_p(File.join(root_directory, 'tmp'))
+      FileUtils.mkdir_p(File.join(root_directory, 'tmp', 'pid'))
     end
 
     def load_configuration
@@ -47,7 +55,7 @@ class Messed
     
     def setup_application
       @application = Messed.new
-      @application.configuration = configuration.application
+      @application.booter = self
       @application.incoming = create_incoming_queue
       @application.outgoing = create_outgoing_queue
       @application.instance_eval(File.read(runner_file), runner_file)
@@ -78,7 +86,7 @@ class Messed
       @interface_map = {}
       configuration.interfaces.each do |name, conf|
         logger.info "Loading interface `#{name}'"
-        @interface_map[name] = Interface.interface_from_configuration(self, name, conf.adapter, conf.options)
+        @interface_map[name] = Interface.interface_from_configuration(self, name, conf)
       end
     end
     

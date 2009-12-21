@@ -42,7 +42,7 @@ class Messed
 
         include ConfigHelper
 
-        attr_accessor :adapter, :options, :status_port, :status_address
+        attr_accessor :adapter, :options, :status_port, :status_address, :pid_file
         
         def initialize
           @options = {}
@@ -70,7 +70,7 @@ class Messed
 
     class Application
       include ConfigHelper
-      attr_accessor :status_port, :status_address
+      attr_accessor :status_port, :status_address, :pid_file
     end
 
     include ConfigHelper

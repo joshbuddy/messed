@@ -23,7 +23,7 @@ class Messed
         def process_outgoing(job, message)
           if message.private?
             req = EventMachine::HttpRequest.new("http://twitter.com/direct_messages/new.json")
-            data = {:body => {:user => message.to_user_id, :text => message.body}, :timeout => 30, :head => {'authorization' => [interface.configuration[:username], interface.configuration[:password]]}}
+            data = {:body => {:user => message.to_user_id, :text => message.body}, :timeout => 30, :head => {'authorization' => [interface.configuration.options[:username], interface.configuration.options[:password]]}}
             data[:body][:in_reply_to] = message.in_reply_to if message.in_reply_to
             http = req.post(data)
             http.callback {

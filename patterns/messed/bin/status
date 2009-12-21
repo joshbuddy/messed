@@ -19,7 +19,7 @@ class IncomingRunnerTask < Thor
     puts "=Interfaces"
     booter.interface_map.each {|name, interface|
       puts "==#{interface.name}"
-      Messed::Util::RemoteStatus.new(interface.configuration['host'], interface.configuration['port']).status.each {|k,v|
+      Messed::Util::RemoteStatus.new(interface.configuration.options['host'], interface.configuration.options['port']).status.each {|k,v|
         puts "  %40s - %s" % [k, v]
       }
     }

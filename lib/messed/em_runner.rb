@@ -27,13 +27,12 @@ class Messed
     def initialize(options, &block)
       logger.info "Starting... #{options.inspect}"
       if options[:detach]
-        pid = EM.fork_reactor do
+        $pid = EM.fork_reactor do
           trap("INT") { EM.stop_reactor_loop }
           EM.run do
             EM.next_tick(&block)
           end
         end
-        File.open(options[:pid_file], 'w') {|f| f << pid} if options[:pid_file]
         Process.detach(pid)
         exit(0)
       else

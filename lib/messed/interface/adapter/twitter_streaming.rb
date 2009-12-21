@@ -9,8 +9,8 @@ class Messed
 
         def start
           stream = Twitter::JSONStream.connect(
-            :path    => "/1/statuses/#{interface.configuration['streaming']['type']}.json?track=%23classicmoviequotes",
-            :auth    => "#{interface.configuration['username']}:#{interface.configuration['password']}"
+            :path    => "/1/statuses/#{interface.configuration.options['streaming']['type']}.json?track=%23classicmoviequotes",
+            :auth    => "#{interface.configuration.options['username']}:#{interface.configuration.options['password']}"
           )
           
           stream.each_item do |item|

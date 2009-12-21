@@ -3,11 +3,11 @@ class Messed
     autoload :Runner,      File.join('messed', 'interface', 'runner')
     autoload :Adapter,     File.join('messed', 'interface', 'adapter')
     
-    def self.interface_from_configuration(booter, name, adapter, configuration)
+    def self.interface_from_configuration(booter, name, configuration)
       interface = Interface.new
       interface.send(:name=,          name)
       interface.send(:configuration=, configuration)
-      interface.send(:adapter=,       Adapter.for_name(adapter).new(interface))
+      interface.send(:adapter=,       Adapter.for_name(configuration.adapter).new(interface))
       interface.send(:booter=,        booter)
       interface
     end
@@ -35,9 +35,10 @@ class Messed
     end
     
     def start
-      EM.start_server(configuration[:status_address] || '0.0.0.0', configuration[:status_port] || 11190, EMRunner::StatusHandler) do |c|
+      EM.start_server(configuration.status_address || '0.0.0.0', configuration.status_port || 11190, EMRunner::StatusHandler) do |c|
         c.interface = self
       end
+      booter.write_pid_file(configuration.pid_file)
       adapter.start
     end
     
