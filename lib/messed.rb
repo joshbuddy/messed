@@ -91,7 +91,6 @@ class Messed
   
   def start(continue_forever = true)
     if EM.reactor_running?
-
       if booter
         EM.start_server(booter.configuration.application.status_address || '0.0.0.0', booter.configuration.application.status_port || 19191, EMRunner::StatusHandler) do |c|
           c.interface = self
@@ -133,6 +132,7 @@ class Messed
   end
     
   def process(message)
+    logger.debug("Processing `#{message.body}'")
     increment_messages_received!
     responses = []
     
@@ -189,12 +189,14 @@ class Messed
   protected :process_destination
 
   def process_responses(responses)
-    if responses && !responses.size.zero?
+    if responses && !responses.empty?
       logger.debug("Putting response #{responses.first.body} onto outgoing queue")
       @connection.put(responses.shift.to_json) do
         increment_messages_sent!
         process_responses(responses)
       end
+    else
+      logger.debug("No response.")
     end
   end
   

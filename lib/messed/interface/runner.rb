@@ -4,7 +4,7 @@ class Messed
   class Interface
     class Runner
       
-      attr_reader :runnable, :options, :detach
+      attr_reader :runnable, :options
       
       def initialize(runnable, options)
         @runnable = runnable
@@ -12,7 +12,7 @@ class Messed
       end
       
       def start
-        runnable.start(detach)
+        runnable.start(options[:detach])
       end
       
     end
