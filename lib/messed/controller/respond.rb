@@ -22,6 +22,7 @@ class Messed
 
       def reply(response, options = {})
         options[:to] ||= message.from
+        options[:from] ||= message.to
         options[:in_reply_to] ||= message
         set_response(response, options)
       end
