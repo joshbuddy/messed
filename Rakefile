@@ -17,12 +17,13 @@ begin
     s.add_dependency 'em-beanstalk', '>=0.0.6'
     s.add_dependency 'hashify', '>=0.0.2'
     s.add_dependency 'hwia', '>=1.0.2'
+    s.add_dependency 'twitter-stream', '>=0.1.3'
     s.add_dependency 'activesupport'
     s.add_dependency 'dressmaker', '>=0.0.3'
     s.add_dependency 'beanstalk-client'
     s.add_dependency 'rspec'
     s.add_dependency 'json'
-    s.add_dependency 'twitter-stream', '>=0.1.3'
+    s.add_dependency 'thor'
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
