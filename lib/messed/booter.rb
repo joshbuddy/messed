@@ -20,6 +20,8 @@ class Messed
     end
     
     def setup_booter(root_directory, options)
+      $LOAD_PATH << File.expand_path(root_directory)
+      
       @root_directory = root_directory
       @environment = options[:environment] || 'development'
 
