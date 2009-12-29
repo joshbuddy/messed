@@ -12,8 +12,6 @@ else
 end
 
 require 'thor'
-
-#{File.read(f.path)}
     HERE_DOC
     
     f.make_executable!
