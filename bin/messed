@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby -rubygems
-# Tokyo cache cow command line interface script.
-# Run <tt>tokyo_cache_cow -h</tt> to get more usage.
+# Messed generation script
 require File.dirname(__FILE__) + '/../lib/messed'
 
 if ARGV[0]
