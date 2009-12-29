@@ -1,14 +1,15 @@
 class Messed
   module Tasks
     class Console
+      
       module KeyboardHandler
         include EM::Protocols::LineText2
 
-        attr_accessor :booter
+        attr_accessor :root, :environment
 
         def log_outgoing(responses)
           if responses.empty?
-            puts "No Responses"
+            puts "No responses"
           else
             puts "Responding ... #{responses.map{|r| "`#{r.body}'"}.join(', ')}"
           end
@@ -20,19 +21,32 @@ class Messed
         end
 
         def post_init
+          print_banner
           prompt
         end
-        
+
+        def print_banner
+          puts "?  help"
+          puts "!q quit"
+          puts "Eventhing else is a message"
+        end
+
         def receive_line(data)
           case data.strip
           when '!q'
             EM.stop_event_loop
             exit
           when '?'
-            puts "!q quits"
-            puts "Eventhing else is a message"
+            print_banner
           else
-            log_outgoing(booter.application.process(booter.application.message_class.new(data.strip)))
+            pid = EM.fork_reactor do
+              Booter.new(root, :environment => environment, :supress_banner => true) do |booter|
+                Messed::Logger.instance.setup_logger(::Logger.new(STDOUT), :debug)
+                log_outgoing(booter.application.process(booter.application.message_class.new(data.strip)))
+                EM.stop_event_loop
+              end
+            end
+            Process.wait(pid)
           end
           prompt
         end
@@ -43,10 +57,10 @@ class Messed
       end
       
       def start
-        Booter.new($root, :environment => ARGV[0]) do |booter|
-          Messed::Logger.instance.setup_logger(::Logger.new(STDOUT), :debug)
+        EM.run do
           EM.open_keyboard(KeyboardHandler) do |handler|
-            handler.booter = booter
+            handler.root = $root
+            handler.environment = ARGV[0]
           end
         end
       end

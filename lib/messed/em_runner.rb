@@ -25,7 +25,7 @@ class Messed
     end
 
     def initialize(options, &block)
-      logger.info "Starting... #{options.inspect}"
+      logger.info "Starting... #{options.inspect}" unless options[:supress_banner]
       if options[:detach]
         pid = EM.fork_reactor do
           trap("INT") { EM.stop_reactor_loop }

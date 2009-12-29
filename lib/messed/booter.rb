@@ -9,7 +9,7 @@ class Messed
     
     def initialize(root_directory, options = {}, &block)
       if block
-        EMRunner.new(:detach => options[:detach]) {
+        EMRunner.new(:detach => options[:detach], :supress_banner => options[:supress_banner]) {
           setup_booter(root_directory, options)
           record_pid(Process.pid)
           yield self
