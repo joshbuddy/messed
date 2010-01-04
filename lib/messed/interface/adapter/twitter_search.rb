@@ -101,7 +101,7 @@ class Messed
             @ids << message.id
             @packets_processed += 1
             interface.application.incoming << message
-            logger.debug "Adding message #{message.id}: #{message.body} to incoming queue"
+            logger.debug "Twitter Search: Adding message #{message.id}: #{message.body} to incoming queue"
           end
         end
 
