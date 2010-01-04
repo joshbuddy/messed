@@ -67,3 +67,10 @@ Rake::RDocTask.new do |rd|
   rd.rdoc_files.include("README.rdoc", "lib/**/*.rb")
   rd.rdoc_dir = 'rdoc'
 end
+
+begin
+  require 'code_stats'
+  CodeStats::Tasks.new
+rescue LoadError
+  puts "Code stats not available, install it with gem install code_stats"
+end
