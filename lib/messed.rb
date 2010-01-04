@@ -89,12 +89,21 @@ class Messed
   end
   alias_method :always, :otherwise
   
+  def status_port
+    booter.configuration.application.status_port || 19191
+  end
+  
+  def status_host
+    booter.configuration.application.status_address || '0.0.0.0'
+  end
+  
   def start(continue_forever = true)
     if EM.reactor_running?
       if booter
-        EM.start_server(booter.configuration.application.status_address || '0.0.0.0', booter.configuration.application.status_port || 19191, EMRunner::StatusHandler) do |c|
+        EM.start_server(status_host, status_port, EMRunner::StatusHandler) do |c|
           c.interface = self
         end
+        logger.info "Status handler for #{self.class} started on #{status_host}:#{status_port}"
         booter.write_pid_file(booter.configuration.application.pid_file)
       end
       

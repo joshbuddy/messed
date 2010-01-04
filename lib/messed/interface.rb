@@ -1,5 +1,8 @@
 class Messed
   class Interface
+    
+    include Logger::LoggingModule
+    
     autoload :Runner,      File.join('messed', 'interface', 'runner')
     autoload :Adapter,     File.join('messed', 'interface', 'adapter')
     
@@ -34,9 +37,27 @@ class Messed
       booter.application
     end
     
+    def status_host
+      configuration.status_address || '0.0.0.0'
+    end
+    
+    def status_port
+      configuration.status_port || 11190
+    end
+    
     def start
-      EM.start_server(configuration.status_address || '0.0.0.0', configuration.status_port || 11190, EMRunner::StatusHandler) do |c|
-        c.interface = self
+      begin
+        EM.start_server(status_host, status_port, EMRunner::StatusHandler) do |c|
+          c.interface = self
+        end
+        logger.info "Status handler for #{self.class} started on #{status_host}:#{status_port}"
+      rescue RuntimeError => e
+        if e.message =~ /no acceptor/
+          logger.error "Unable to start status handler"
+        else
+          raise e
+        end
+          
       end
       booter.write_pid_file(configuration.pid_file)
       adapter.start

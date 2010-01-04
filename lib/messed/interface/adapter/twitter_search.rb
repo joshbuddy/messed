@@ -17,7 +17,7 @@ class Messed
           # do work.
           begin
             query = build_query
-            logger.debug "query for twitter_search #{query}"
+            logger.debug "Twitter Search -> #{query.inspect}"
             http = EventMachine::HttpRequest.new("http://#{interface.configuration.options[:fetch][:host]}/#{interface.configuration.options[:fetch][:path]}").
               get(:query => query, :timeout => 30)
             http.callback {
@@ -74,7 +74,7 @@ class Messed
             @ids << message.id
             @packets_processed += 1
             interface.application.incoming << message
-            logger.debug "putting on #{message.id}: #{message.body}"
+            logger.debug "Adding message #{message.id}: #{message.body} to incoming queue"
           end
         end
 

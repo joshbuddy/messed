@@ -23,6 +23,18 @@ class Messed
         end
       end
   
+      method_options %w( environment -e ) => "development"
+      method_options %w( detach -d ) => false
+      desc "start all interfaces and application [NAME]", "starts all"
+      def all
+        Messed::Booter.new($root, :detach => options.detach?, :environment => options.environment) do |booter|
+          booter.configuration.interfaces.names.each do |name|
+            booter.interface_for(name.to_sym).start
+          end
+          booter.application.start
+        end
+      end
+  
     end
   end
 end

@@ -83,7 +83,7 @@ class Messed
     def setup_interfaces
       @interface_map = {}
       configuration.interfaces.each do |name, conf|
-        logger.info "Loading interface `#{name}'"
+        logger.info "Setting up interface: #{name.inspect}"
         @interface_map[name] = Interface.interface_from_configuration(self, name, conf)
       end
     end
