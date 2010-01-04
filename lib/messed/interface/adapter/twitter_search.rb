@@ -13,7 +13,7 @@ class Messed
         end
         
         def start
-          @ids ||= []
+          @ids ||= default_ids
           # do work.
           begin
             query = build_query
@@ -51,10 +51,37 @@ class Messed
           end
         end
 
+        def id_retention_count
+          interface.configuration.options[:id_retention_size] || 500
+        end
+
         def trim_ids
-          while @ids.size > 500
+          while @ids.size > id_retention_count
             @ids.shift
           end
+        end
+
+        def store_ids?
+          id_retention_file
+        end
+
+        def write_ids
+          File.open(id_retention_file, 'w') { |f| f << @ids.to_json }
+        end
+        
+        def read_ids
+          @ids = JSON.parse(File.read(id_retention_file))
+        end
+        
+        def default_ids
+          store_ids? ? read_ids : []
+        rescue 
+          logger.error "Twitter Search: Unable to load ids from #{id_retention_file.inspect}"
+          []
+        end
+        
+        def id_retention_file
+          interface.configuration.options[:id_retention_tmp_file]
         end
 
         def result_to_message(result)
