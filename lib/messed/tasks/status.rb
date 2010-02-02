@@ -5,7 +5,7 @@ class Messed
       desc "Status", "status"
       method_options :environment => "development"
       def status
-        booter = Messed::Booter.new(File.expand_path(File.join(File.dirname(__FILE__), '..')), options.environment)
+        booter = Messed::Booter.new($root, options.environment)
     
         puts "=Queues"
         puts "==Incoming"
