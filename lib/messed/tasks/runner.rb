@@ -6,15 +6,15 @@ class Messed
       method_options %w( detach -d ) => false
       desc "interface [NAME] [CMD]", "starts an interface (start|stop)"
       def interface(name, cmd)
-        Messed::Booter.new($root, :detach => options.detach?, :environment => options.environment) do |booter|
-          interface = booter.interface_for(name.to_sym)
-          raise("unable to find an interface with name the `#{name}'") unless interface
-          case options.cmd
-          when 'start'
+        case options.cmd
+        when 'start'
+          Messed::Booter.new($root, :detach => options.detach?, :environment => options.environment) do |booter|
+            interface = booter.interface_for(name.to_sym)
+            raise("unable to find an interface with name the `#{name}'") unless interface
             interface.start
-          when 'stop'
-            interface.stop
           end
+        when 'stop'
+          Messed::Booter.new($root, :environment => options.environment).interface_for(name.to_sym).stop
         end
       end
   
@@ -22,17 +22,17 @@ class Messed
       method_options %w( detach -d ) => false
       desc "application [CMD]", "start the application (start|stop)"
       def application(cmd)
-        Messed::Booter.new($root, :detach => options.detach?, :environment => options.environment) do |booter|
-          application = booter.application
-          case options.cmd
-          when 'start'
+        case options.cmd
+        when 'start'
+          Messed::Booter.new($root, :detach => options.detach?, :environment => options.environment) do |booter|
+            application = booter.application
             application.start
-          when 'stop'
-            application.stop
           end
+        when 'stop'
+          Messed::Booter.new($root, :environment => options.environment).application.stop
         end
       end
-  
+      
       method_options %w( environment -e ) => "development"
       method_options %w( detach -d ) => false
       desc "start all interfaces and application [NAME]", "starts all"
