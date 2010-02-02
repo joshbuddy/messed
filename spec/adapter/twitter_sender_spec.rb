@@ -2,6 +2,8 @@ require 'spec/spec_helper'
 require 'em-http/mock'
 require 'rack'
 
+EventMachine::HttpRequest = EventMachine::MockHttpRequest
+
 describe "A Messed application", 'twitter sending' do
   before(:all) do
     EventMachine::HttpRequest.register_file("http://twitter.com:80/direct_messages/new.json", :post, File.join(File.dirname(__FILE__), 'http', 'direct_message'))

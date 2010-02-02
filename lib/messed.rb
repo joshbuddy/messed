@@ -120,6 +120,10 @@ class Messed
     end
   end
 
+  def stop
+    Process.kill("INT", booter.read_pid_file(booter.configuration.application.pid_file))
+  end
+
   def process_incoming(continue_forever)
     @connection.reserve(continue_forever ? nil : 0.5) { |job|
       begin

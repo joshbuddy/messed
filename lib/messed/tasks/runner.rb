@@ -4,22 +4,32 @@ class Messed
 
       method_options %w( environment -e ) => "development"
       method_options %w( detach -d ) => false
-      desc "interface [NAME]", "starts an interface"
+      desc "interface [NAME] [CMD]", "starts an interface (start|stop)"
       def interface(name)
         Messed::Booter.new($root, :detach => options.detach?, :environment => options.environment) do |booter|
           interface = booter.interface_for(name.to_sym)
           raise("unable to find an interface with name the `#{name}'") unless interface
-          interface.start
+          case options.cmd
+          when 'start'
+            interface.start
+          when 'stop'
+            interface.stop
+          end
         end
       end
   
       method_options %w( environment -e ) => "development"
       method_options %w( detach -d ) => false
-      desc "application [NAME]", "start the application"
+      desc "application [CMD]", "start the application (start|stop)"
       def application
         Messed::Booter.new($root, :detach => options.detach?, :environment => options.environment) do |booter|
           application = booter.application
-          application.start
+          case options.cmd
+          when 'start'
+            application.start
+          when 'stop'
+            application.stop
+          end
         end
       end
   

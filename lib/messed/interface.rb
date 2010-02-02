@@ -45,6 +45,11 @@ class Messed
       configuration.status_port || 11190
     end
     
+    def stop
+      Process.kill("INT", booter.read_pid_file(configuration.pid_file))
+      exit(0)
+    end
+    
     def start
       begin
         EM.start_server(status_host, status_port, EMRunner::StatusHandler) do |c|

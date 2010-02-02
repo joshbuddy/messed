@@ -36,9 +36,19 @@ class Messed
     def record_pid(pid)
       @pid = pid
     end
-
+    
+    def expand_pid_file(pid_file)
+      File.expand_path(pid_file, root_directory)
+    end
+    
     def write_pid_file(pid_file)
-      File.open(File.expand_path(pid_file, root_directory), 'w') {|f| f << pid} if pid_file
+      File.open(expand_pid_file(pid_file), 'w') {|f| f << pid} if pid_file
+    end
+
+    def read_pid_file(pid_file)
+      Integer(File.read(expand_pid_file(pid_file)))
+    rescue ArgumentError
+      nil
     end
 
     def prepare_root
