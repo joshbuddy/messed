@@ -17,8 +17,8 @@ class Messed
 
       instance = new(environments, environment)
 
-      instance.instance_eval(File.read(File.join(dir, 'environment.rb')))
-      instance.instance_eval(File.read(File.join(dir, 'environments', "#{environment}.rb")))
+      instance.instance_eval(File.read(File.join(dir, 'environment.rb')), File.join(dir, 'environment.rb'), 1)
+      instance.instance_eval(File.read(File.join(dir, 'environments', "#{environment}.rb")), File.join(dir, 'environments', "#{environment}.rb"), 1)
 
       instance
     end
