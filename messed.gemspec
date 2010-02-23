@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{messed}
-  s.version = "0.0.1"
+  s.version = "0.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Joshua Hull"]
@@ -157,7 +157,6 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<hashify>, [">= 0.0.2"])
       s.add_runtime_dependency(%q<hwia>, [">= 1.0.2"])
       s.add_runtime_dependency(%q<twitter-stream>, [">= 0.1.3"])
-      s.add_runtime_dependency(%q<activesupport>, [">= 0"])
       s.add_runtime_dependency(%q<dressmaker>, [">= 0.0.3"])
       s.add_runtime_dependency(%q<beanstalk-client>, [">= 0"])
       s.add_runtime_dependency(%q<rspec>, [">= 0"])
@@ -170,7 +169,6 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<hashify>, [">= 0.0.2"])
       s.add_dependency(%q<hwia>, [">= 1.0.2"])
       s.add_dependency(%q<twitter-stream>, [">= 0.1.3"])
-      s.add_dependency(%q<activesupport>, [">= 0"])
       s.add_dependency(%q<dressmaker>, [">= 0.0.3"])
       s.add_dependency(%q<beanstalk-client>, [">= 0"])
       s.add_dependency(%q<rspec>, [">= 0"])
@@ -184,7 +182,6 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<hashify>, [">= 0.0.2"])
     s.add_dependency(%q<hwia>, [">= 1.0.2"])
     s.add_dependency(%q<twitter-stream>, [">= 0.1.3"])
-    s.add_dependency(%q<activesupport>, [">= 0"])
     s.add_dependency(%q<dressmaker>, [">= 0.0.3"])
     s.add_dependency(%q<beanstalk-client>, [">= 0"])
     s.add_dependency(%q<rspec>, [">= 0"])
