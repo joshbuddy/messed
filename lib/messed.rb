@@ -5,7 +5,6 @@ require 'eventmachine'
 require 'em-http'
 require 'em-beanstalk'
 require 'hwia'
-require 'active_support'
 require 'dressmaker'
 
 $LOAD_PATH << File.dirname(__FILE__)
