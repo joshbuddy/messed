@@ -106,7 +106,7 @@ class Messed
         booter.write_pid_file(booter.configuration.application.pid_file)
       end
       
-      @connection = EM::Beanstalk.new
+      @connection = EM::Beanstalk.new(:tube => nil)
       @connection.watch(incoming.tube) do
         @connection.use(outgoing.tube) do
           process_incoming(continue_forever)
