@@ -133,7 +133,13 @@ class Messed
         end
       rescue JSON::ParserError
         # unrecoverable
-        logger.error "message #{job.body.inspect} not in JSON format"
+        logger.error "message `#{job.body}' not in JSON format"
+        job.delete do
+          process_incoming(continue_forever)
+        end
+      rescue Exception => e
+        logger.error "something went terribly wrong #{e.message}"
+        logger.error e.backtrace.join("\n  ")
         job.delete do
           process_incoming(continue_forever)
         end
