@@ -13,8 +13,12 @@ class Messed
             raise("unable to find an interface with name the `#{name}'") unless interface
             interface.start
           end
+          exit(0)
         when 'stop'
           Messed::Booter.new($root, :environment => options.environment).interface_for(name.to_sym).stop
+          exit(0)
+        else
+          raise
         end
       end
   
@@ -28,8 +32,12 @@ class Messed
             application = booter.application
             application.start
           end
+          exit(0)
         when 'stop'
           Messed::Booter.new($root, :environment => options.environment).application.stop
+          exit(0)
+        else
+          raise
         end
       end
       
