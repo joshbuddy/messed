@@ -138,7 +138,7 @@ class Messed
           process_incoming(continue_forever)
         end
       rescue Exception => e
-        logger.error "something went terribly wrong #{e.message}"
+        logger.error "something went terribly wrong `#{job.body}' -> #{e.message}"
         logger.error e.backtrace.join("\n  ")
         job.delete do
           process_incoming(continue_forever)
