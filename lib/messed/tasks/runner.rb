@@ -8,14 +8,14 @@ class Messed
       def interface(name, cmd)
         case cmd
         when 'start'
-          Messed::Booter.new($root, :detach => options.detach?, :environment => options.environment) do |booter|
+          Messed::Booter.new($root, :detach => options.detach?, :environment => options.environment, :name => name.to_sym) do |booter|
             interface = booter.interface_for(name.to_sym)
             raise("unable to find an interface with name the `#{name}'") unless interface
             interface.start
           end
           exit(0)
         when 'stop'
-          Messed::Booter.new($root, :environment => options.environment).interface_for(name.to_sym).stop
+          Messed::Booter.new($root, :environment => options.environment, :name => name.to_sym).interface_for(name.to_sym).stop
           exit(0)
         else
           raise
@@ -28,7 +28,7 @@ class Messed
       def application(cmd)
         case cmd
         when 'start'
-          Messed::Booter.new($root, :detach => options.detach?, :environment => options.environment) do |booter|
+          Messed::Booter.new($root, :detach => options.detach?, :environment => options.environment, :name => 'application') do |booter|
             application = booter.application
             application.start
           end
