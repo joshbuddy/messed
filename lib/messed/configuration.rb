@@ -9,13 +9,13 @@ class Messed
       
     end
     
-    def self.load_from_directory(environment, dir)
+    def self.load_from_directory(booter, environment, dir)
       environments = []
       Dir[File.join(dir, '*')].each do |file|
         environments << file if File.directory?(file)
       end
 
-      instance = new(environments, environment)
+      instance = new(booter, environments, environment)
 
       instance.instance_eval(File.read(File.join(dir, 'environment.rb')), File.join(dir, 'environment.rb'), 1)
       instance.instance_eval(File.read(File.join(dir, 'environments', "#{environment}.rb")), File.join(dir, 'environments', "#{environment}.rb"), 1)
@@ -79,11 +79,11 @@ class Messed
 
     include ConfigHelper
     
-    attr_reader :queues, :interfaces, :application, :environment, :environments
+    attr_reader :queues, :interfaces, :application, :environment, :environments, :booter
     attr_accessor :logger, :log_level
     
-    def initialize(environments, environment)
-      @environments, @environment = environments, environment
+    def initialize(booter, environments, environment)
+      @booter, @environments, @environment = booter, environments, environment
       @queues = Queues.new
       @interfaces = Interfaces.new
       @application = Application.new

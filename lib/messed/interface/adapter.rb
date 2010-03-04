@@ -1,4 +1,6 @@
-require 'json'
+unless Kernel.const_defined?(:ActiveSupport)
+  require 'active_support'
+end
 
 class Messed
   class Interface

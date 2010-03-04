@@ -5,9 +5,10 @@ class Messed
     
     include Logger::LoggingModule
     
-    attr_reader :root_directory, :environment, :application, :interface_map, :configuration, :pid
+    attr_reader :root_directory, :environment, :application, :interface_map, :configuration, :pid, :name
     
     def initialize(root_directory, options = {}, &block)
+      @name = options[:name]
       if block
         EMRunner.new(:detach => options[:detach], :supress_banner => options[:supress_banner]) {
           setup_booter(root_directory, options)
@@ -57,7 +58,7 @@ class Messed
     end
 
     def load_configuration
-      @configuration = Configuration.load_from_directory(@environment, File.expand_path(File.join(root_directory, 'config')))
+      @configuration = Configuration.load_from_directory(self, @environment, File.expand_path(File.join(root_directory, 'config')))
     end
 
     def setup_queues
