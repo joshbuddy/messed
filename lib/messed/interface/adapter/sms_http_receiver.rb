@@ -11,11 +11,11 @@ class Messed
         # This lets us make our aggregator classes incredibly simple so they don't have
         # to concern themselves with middleware. See the subclasses for an example
         class Middleware
-          def initialize app, sms_http_receiver
+          def initialize(app, sms_http_receiver)
             @app, @sms_http_receiver = app, aggregator
           end
           
-          def call env
+          def call(env)
             env, message = Rack::Request.new(env), SMS::Message.new
             @sms_http_receiver.receive env, message
             env[self.class.rack_key] = message

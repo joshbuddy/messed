@@ -4,7 +4,7 @@ class Messed
       class SMS
         class Textmarks < SMSHTTPReceiver
           
-          def receive request, message
+          def receive(request, message)
             message.from  = request.params['from']
             message.to    = request.params['to']
             message.body  = request.params['body']
