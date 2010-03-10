@@ -40,7 +40,7 @@ class Messed
         # Generally you'll want to return a blank response, but this may need to be
         # changed depending on the aggregator.
         def response
-          [204, {}, nil]
+          [204, {}, []]
         end
         
         # Parse out the incoming message in the middleware and drop it on this queue
