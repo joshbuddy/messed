@@ -1,0 +1,107 @@
+--- 
+dependencies: 
+  beanstalk-client: 
+    group: 
+    - :default
+    version: ">= 0"
+  em-beanstalk: 
+    group: 
+    - :default
+    version: ">= 0"
+  thor: 
+    group: 
+    - :default
+    version: ">= 0"
+  hashify: 
+    group: 
+    - :default
+    version: ">= 0"
+  rspec: 
+    group: 
+    - :default
+    version: ">= 0"
+  dressmaker: 
+    group: 
+    - :default
+    version: ">= 0"
+  memcached: 
+    group: 
+    - :default
+    version: ">= 0"
+  rack: 
+    group: 
+    - :default
+    version: ">= 0"
+  em-jack: 
+    group: 
+    - :default
+    version: ">= 0"
+  methodmissing-hwia: 
+    group: 
+    - :default
+    version: ">= 0"
+  em-http-request: 
+    group: 
+    - :default
+    version: ">= 0"
+  json: 
+    group: 
+    - :default
+    version: ">= 0"
+  activesupport: 
+    group: 
+    - :default
+    version: ">= 0"
+  twitter: 
+    group: 
+    - :default
+    version: ">= 0"
+specs: 
+- activesupport: 
+    version: 2.3.5
+- methodmissing-hwia: 
+    version: 1.0.2
+- eventmachine: 
+    version: 0.12.10
+- em-jack: 
+    version: 0.0.5
+- json: 
+    version: 1.2.2
+- memcached: 
+    version: 0.18.0
+- rack: 
+    version: 1.1.0
+- crack: 
+    version: 0.1.7
+- rspec: 
+    version: 1.3.0
+- dressmaker: 
+    version: 0.0.3
+- ruby-hmac: 
+    version: 0.4.0
+- hashify: 
+    version: 0.0.3
+- addressable: 
+    version: 2.1.1
+- em-http-request: 
+    version: 0.2.7
+- hashie: 
+    version: 0.1.8
+- oauth: 
+    version: 0.3.6
+- thor: 
+    version: 0.13.4
+- httparty: 
+    version: 0.4.5
+- twitter: 
+    version: 0.8.4
+- em-beanstalk: 
+    version: 0.0.8
+- beanstalk-client: 
+    version: 1.0.2
+hash: 2bf4f37bee01834478eb54fcabb1c6b52b2d2137
+sources: 
+- Rubygems: 
+    uri: http://gems.github.com
+- Rubygems: 
+    uri: http://gemcutter.org

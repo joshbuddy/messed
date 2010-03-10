@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+if ENV['MESSED_HOME']
+  require File.join(ENV['MESSED_HOME'], 'lib', 'messed')
+else  
+  require 'messed'
+end
+
+require 'thor'
+$root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
+
+Messed::Tasks::Console.start
