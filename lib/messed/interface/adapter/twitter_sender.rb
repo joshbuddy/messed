@@ -14,7 +14,11 @@ class Messed
           jack.watch(interface.application.outgoing.tube) do
             jack.use(interface.application.outgoing.tube) do
               jack.each_job do |job|
-                process_outgoing(job, message_class.from_json(job.body))
+                begin
+                  process_outgoing(job, message_class.from_json(job.body))
+                rescue Exception => e
+                  logger.error("#{e.message}\n#{e.backtrace.join("\n--")}")
+                end
               end
             end
           end

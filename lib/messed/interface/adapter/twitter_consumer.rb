@@ -14,6 +14,10 @@ class Messed
           @last_status = nil
         end
 
+        def message_class
+          Messed::Message::Twitter
+        end
+
         def type
           :twitter
         end

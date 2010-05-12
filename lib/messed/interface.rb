@@ -62,7 +62,6 @@ class Messed
         else
           raise e
         end
-          
       end
       booter.write_pid_file(configuration.pid_file)
       adapter.start
