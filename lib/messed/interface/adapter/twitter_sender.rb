@@ -10,18 +10,25 @@ class Messed
         end
         
         def start
-          jack = EM::Beanstalk.new
-          jack.watch(interface.application.outgoing.tube) do
-            jack.use(interface.application.outgoing.tube) do
-              jack.each_job do |job|
-                begin
-                  process_outgoing(job, message_class.from_json(job.body))
-                rescue Exception => e
-                  logger.error("#{e.message}\n#{e.backtrace.join("\n--")}")
-                end
-              end
+          @jack = EM::Beanstalk.new
+          @jack.watch(interface.application.outgoing.tube) do
+            @jack.use(interface.application.outgoing.tube) do
+              process_jobs
             end
           end
+        end
+        
+        def process_jobs
+          @jack.each_job { |job|
+            begin
+              process_outgoing(job, message_class.from_json(job.body))
+            rescue Exception => e
+              logger.error("#{e.message}\n#{e.backtrace.join("\n--")}")
+            end
+          }.on_error { |err|
+            logger.error(err.to_s)
+            process_jobs
+          }
         end
         
         def process_outgoing(job, message)
