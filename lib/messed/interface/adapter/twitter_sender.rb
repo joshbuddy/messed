@@ -23,6 +23,7 @@ class Messed
             begin
               process_outgoing(job, message_class.from_json(job.body))
             rescue Exception => e
+              job.release(5)
               logger.error("#{e.message}\n#{e.backtrace.join("\n--")}")
             end
           }.on_error { |err|

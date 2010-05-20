@@ -145,7 +145,8 @@ class Messed
         end
       end
     }.on_error { |message|
-      EM.stop_event_loop
+      logger.error message.to_s
+      EM.stop
     }
   end
     
