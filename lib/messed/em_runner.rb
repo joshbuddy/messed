@@ -28,9 +28,16 @@ class Messed
       logger.info "Starting..." unless options[:supress_banner]
       if options[:detach]
         pid = EM.fork_reactor do
-          trap("INT") { EM.stop_reactor_loop }
-          EM.run do
-            EM.next_tick(&block)
+          begin
+            trap("INT") { EM.stop_reactor_loop }
+            EM.run do
+              EM.next_tick(&block)
+            end
+          rescue Exception
+            logger.error "FATAL ERROR #{$!.message}"
+            logger.error $!.backtrace.join("\n")
+            EM.stop_reactor_loop
+            exit(1)
           end
         end
         Process.detach(pid)

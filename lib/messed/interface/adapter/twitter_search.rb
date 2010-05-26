@@ -44,7 +44,9 @@ class Messed
                 start
               end
             }
-          rescue RuntimeError
+          rescue Exception
+            logger.error $!.message
+            logger.error $!.backtrace.join("\n")
             EM.add_timer(interface.configuration.options[:interval]) do
               start
             end
